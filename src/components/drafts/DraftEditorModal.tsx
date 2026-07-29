@@ -18,6 +18,8 @@ import {
   Clock,
   Send,
   HelpCircle,
+  Type,
+  FileText,
 } from 'lucide-react';
 import { Draft, PlatformType, MediaItem, DraftStatus } from '../../types';
 
@@ -198,6 +200,23 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
     }, 800);
   };
 
+  // Real-time word and character count calculations
+  const getCombinedContentText = () => {
+    if (platform === 'x') {
+      return threadItems.join(' ');
+    }
+    if (platform === 'instagram') {
+      return [body, ...carouselSlides].join(' ');
+    }
+    return body;
+  };
+
+  const combinedContentText = getCombinedContentText();
+  const charCount = combinedContentText.length;
+  const wordCount = combinedContentText.trim() ? combinedContentText.trim().split(/\s+/).filter(Boolean).length : 0;
+  const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+  const isXOverLimit = platform === 'x' && threadItems.some((item) => item.length > 280);
+
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 dark:bg-slate-950/80 backdrop-blur-md">
@@ -309,7 +328,7 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
           </div>
 
           {/* Main Body */}
-          <div className="p-6 overflow-y-auto max-h-[calc(92vh-140px)] space-y-6">
+          <div className="p-6 overflow-y-auto flex-1 min-h-0 space-y-6">
             {activeTab === 'edit' ? (
               <div className="space-y-6">
                 {/* Title Input */}
@@ -660,6 +679,57 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
                 )}
               </div>
             )}
+          </div>
+
+          {/* Modal Footer with Real-time Word and Character Count Indicator */}
+          <div className="px-6 py-3 border-t border-slate-200/60 dark:border-emerald-500/20 bg-slate-50/90 dark:bg-emerald-950/40 flex flex-wrap items-center justify-between gap-3 text-xs font-medium">
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* Character Count */}
+              <div className="flex items-center gap-1.5 text-slate-700 dark:text-emerald-200 bg-white dark:bg-emerald-900/40 px-3 py-1.5 rounded-input border border-slate-200/80 dark:border-emerald-500/30 shadow-xs">
+                <Type className="w-3.5 h-3.5 text-emerald-500" />
+                <span className="text-slate-500 dark:text-emerald-400/70 text-[11px] font-semibold">Chars:</span>
+                <span className="font-bold font-mono text-emerald-600 dark:text-emerald-400">{charCount.toLocaleString()}</span>
+              </div>
+
+              {/* Word Count */}
+              <div className="flex items-center gap-1.5 text-slate-700 dark:text-emerald-200 bg-white dark:bg-emerald-900/40 px-3 py-1.5 rounded-input border border-slate-200/80 dark:border-emerald-500/30 shadow-xs">
+                <FileText className="w-3.5 h-3.5 text-emerald-500" />
+                <span className="text-slate-500 dark:text-emerald-400/70 text-[11px] font-semibold">Words:</span>
+                <span className="font-bold font-mono text-emerald-600 dark:text-emerald-400">{wordCount.toLocaleString()}</span>
+              </div>
+
+              {/* Reading Time */}
+              <div className="flex items-center gap-1.5 text-slate-500 dark:text-emerald-300/80 text-[11px] pl-1">
+                <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-emerald-400" />
+                <span>{wordCount === 0 ? '0 min read' : `~${readingTime} min read`}</span>
+              </div>
+
+              {/* Platform specific badges */}
+              {platform === 'x' && (
+                <div
+                  className={`flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full ${
+                    isXOverLimit
+                      ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 border border-rose-300 dark:border-rose-800'
+                      : 'bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800'
+                  }`}
+                >
+                  <span>{threadItems.length} {threadItems.length === 1 ? 'Tweet' : 'Thread Tweets'}</span>
+                  {isXOverLimit && <span>• Exceeds 280 chars!</span>}
+                </div>
+              )}
+
+              {platform === 'instagram' && (
+                <div className="text-[11px] text-pink-600 dark:text-pink-400 font-semibold bg-pink-50 dark:bg-pink-950/40 px-2.5 py-1 rounded-full border border-pink-200 dark:border-pink-800">
+                  {carouselSlides.length} Carousel {carouselSlides.length === 1 ? 'Slide' : 'Slides'}
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-slate-400 dark:text-emerald-400/60 hidden sm:inline">
+                Auto-synced to local storage
+              </span>
+            </div>
           </div>
         </motion.div>
       </div>
