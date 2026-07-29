@@ -16,6 +16,7 @@ import {
   Share2,
   Folder,
   Layers,
+  Trash2,
 } from 'lucide-react';
 import { Draft, GeneratedImage, CommunityLink, PlatformType } from '../../types';
 
@@ -28,6 +29,7 @@ interface DashboardHomeViewProps {
   onQuickCreate: () => void;
   onOpenAICopy: () => void;
   onOpenAIImage: () => void;
+  onDeleteImage?: (id: string) => void;
   storageKB: number;
 }
 
@@ -40,6 +42,7 @@ export const DashboardHomeView: React.FC<DashboardHomeViewProps> = ({
   onQuickCreate,
   onOpenAICopy,
   onOpenAIImage,
+  onDeleteImage,
   storageKB,
 }) => {
   const pinnedDrafts = drafts.filter((d) => d.pinned);
@@ -273,8 +276,22 @@ export const DashboardHomeView: React.FC<DashboardHomeViewProps> = ({
                 className="relative rounded-card overflow-hidden group cursor-pointer border border-slate-200/80 dark:border-slate-800 aspect-video glass-card"
               >
                 <img src={img.url} alt={img.prompt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                
+                {onDeleteImage && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteImage(img.id);
+                    }}
+                    className="absolute top-2 right-2 p-1.5 rounded-md bg-slate-950/70 hover:bg-rose-600 text-slate-200 hover:text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all z-10"
+                    title="Delete image"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end">
-                  <p className="text-xs font-semibold text-white truncate">{img.prompt}</p>
+                  <p className="text-xs font-semibold text-white truncate pr-6">{img.prompt}</p>
                   <p className="text-[10px] text-teal-300 font-mono">{img.aspectRatio} • {img.platform}</p>
                 </div>
               </div>

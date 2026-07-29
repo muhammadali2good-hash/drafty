@@ -108,6 +108,16 @@ export default function App() {
     reloadStorage();
   };
 
+  const handleDeleteImage = (id: string) => {
+    StorageService.deleteImage(id);
+    reloadStorage();
+  };
+
+  const handleToggleFavouriteImage = (id: string) => {
+    StorageService.toggleFavouriteImage(id);
+    reloadStorage();
+  };
+
   const handleSaveCommunity = (link: Partial<CommunityLink> & { name: string; url: string; platform: PlatformType }) => {
     StorageService.saveCommunity(link);
     reloadStorage();
@@ -206,6 +216,7 @@ export default function App() {
                 onQuickCreate={handleOpenNewDraft}
                 onOpenAICopy={() => setIsAICopyOpen(true)}
                 onOpenAIImage={() => setIsAIImageOpen(true)}
+                onDeleteImage={handleDeleteImage}
                 storageKB={storageKB}
               />
             )}
@@ -245,6 +256,8 @@ export default function App() {
                 onOpenAIImage={() => setIsAIImageOpen(true)}
                 onTogglePin={handleTogglePinDraft}
                 onDeleteDraft={handleDeleteDraft}
+                onDeleteImage={handleDeleteImage}
+                onToggleFavouriteImage={handleToggleFavouriteImage}
               />
             )}
           </AnimatePresence>
@@ -275,6 +288,9 @@ export default function App() {
         onClose={() => setIsAIImageOpen(false)}
         defaultPlatform={currentPlatform}
         onSaveImage={handleSaveImage}
+        onDeleteImage={handleDeleteImage}
+        onToggleFavouriteImage={handleToggleFavouriteImage}
+        allImages={images}
       />
 
       <DraftEditorModal

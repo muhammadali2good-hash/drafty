@@ -15,6 +15,8 @@ import {
   ArrowRight,
   ExternalLink,
   Folder,
+  Star,
+  Download,
 } from 'lucide-react';
 import { Draft, GeneratedImage, CommunityLink, PlatformType, DraftStatus } from '../../types';
 
@@ -29,6 +31,8 @@ interface PlatformWorkspaceViewProps {
   onOpenAIImage: () => void;
   onTogglePin: (id: string) => void;
   onDeleteDraft: (id: string) => void;
+  onDeleteImage?: (id: string) => void;
+  onToggleFavouriteImage?: (id: string) => void;
 }
 
 const PLATFORM_DETAILS: Record<PlatformType, { title: string; desc: string; quickLabel: string; bgBadge: string }> = {
@@ -54,6 +58,8 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
   onOpenAIImage,
   onTogglePin,
   onDeleteDraft,
+  onDeleteImage,
+  onToggleFavouriteImage,
 }) => {
   const details = PLATFORM_DETAILS[platform] || PLATFORM_DETAILS.general;
   const [filterStatus, setFilterStatus] = useState<DraftStatus | 'all'>('all');
@@ -277,11 +283,47 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
 
             {images.length > 0 ? (
               <div className="grid grid-cols-2 gap-2">
-                {images.slice(0, 4).map((img) => (
+                {images.slice(0, 6).map((img) => (
                   <div key={img.id} className="relative rounded-card overflow-hidden border border-slate-200 dark:border-slate-800 aspect-square group">
                     <img src={img.url} alt={img.prompt} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    
+                    {/* Top Action Overlay */}
+                    <div className="absolute top-1.5 right-1.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                      {onToggleFavouriteImage && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleFavouriteImage(img.id);
+                          }}
+                          className={`p-1 rounded-md text-[10px] backdrop-blur-md transition-colors ${
+                            img.favourite
+                              ? 'bg-amber-500/90 text-white'
+                              : 'bg-slate-900/70 text-slate-200 hover:text-white'
+                          }`}
+                          title={img.favourite ? 'Unfavourite' : 'Favourite'}
+                        >
+                          <Star className={`w-3 h-3 ${img.favourite ? 'fill-white' : ''}`} />
+                        </button>
+                      )}
+
+                      {onDeleteImage && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteImage(img.id);
+                          }}
+                          className="p-1 rounded-md bg-slate-900/70 hover:bg-rose-600/90 text-slate-200 hover:text-white backdrop-blur-md transition-colors"
+                          title="Delete image"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Bottom Prompt Overlay */}
                     <div className="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-opacity p-2 flex flex-col justify-end text-[9px] text-white">
-                      <p className="line-clamp-2">{img.prompt}</p>
+                      <p className="line-clamp-2 pr-4">{img.prompt}</p>
+                      <span className="text-[8px] text-teal-300 font-mono mt-0.5">{img.aspectRatio}</span>
                     </div>
                   </div>
                 ))}
