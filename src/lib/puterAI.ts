@@ -53,6 +53,97 @@ export function isPuterAvailable(): boolean {
 }
 
 /**
+ * Generate Instagram Carousel Slides via Puter.js AI
+ */
+export async function generateInstagramCarouselSlides(
+  topic: string,
+  slideCount: number = 5
+): Promise<string[]> {
+  const promptText = `You are an expert Instagram content creator and visual carousel designer.
+Create a structured ${slideCount}-slide Instagram carousel on the topic/caption: "${topic}".
+
+Format requirements:
+- Return ONLY a JSON array of strings, where each string represents one slide text.
+- Slide 1 MUST be a high-converting hook title/headline.
+- Middle slides should cover clear actionable tips, key data points, or concise advice.
+- The last slide MUST be a strong Call to Action (e.g. Save, Share, Comment below).
+- Keep each slide text clear, engaging, and under 25 words.
+
+Example output format:
+["Slide 1: 5 Secrets to Double Your Reach 🚀", "Slide 2: 1. Post at high-engagement creator hours", "Slide 3: 2. Write saveable carousel slides", "Slide 4: 3. Reply to early comments within 30m", "Slide 5: Save this post to level up your content strategy! 📌"]`;
+
+  try {
+    if (isPuterAvailable()) {
+      const response = await window.puter!.ai.chat(promptText);
+      let outputText = typeof response === 'string' ? response : response?.message?.content || response?.toString() || '';
+      
+      if (outputText.trim()) {
+        const jsonMatch = outputText.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          try {
+            const parsed = JSON.parse(jsonMatch[0]);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              return parsed.map((s: any) => String(s).trim());
+            }
+          } catch (e) {
+            console.warn('Failed to parse JSON array from Puter AI response, falling back to line split');
+          }
+        }
+
+        const lines = outputText
+          .split('\n')
+          .map(l => l.replace(/^[0-9]+[\.\)]\s*/, '').replace(/^[-*]\s*/, '').trim())
+          .filter(l => l.length > 3 && !l.startsWith('[') && !l.startsWith(']'));
+        if (lines.length >= 2) {
+          return lines;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Puter AI carousel generation failed or offline, falling back:', err);
+  }
+
+  // Fallback Carousel Slides
+  return [
+    `Slide 1: Hook - ${topic || 'High Impact Carousel Strategy'} 🚀`,
+    `Slide 2: Tip 1 - Focus on high-value visual takeaways`,
+    `Slide 3: Tip 2 - Use rhythmic typography and high contrast`,
+    `Slide 4: Tip 3 - Keep spacing clean and scannable`,
+    `Slide 5: Save & share this post with fellow creators! 📌`,
+  ];
+}
+
+/**
+ * Regenerate or refine a single Instagram carousel slide using Puter AI
+ */
+export async function generateSingleSlideAI(
+  topic: string,
+  slideIndex: number,
+  currentText?: string
+): Promise<string> {
+  const promptText = `You are an Instagram content specialist.
+Refine or write Slide #${slideIndex + 1} for an Instagram carousel about: "${topic}".
+Current draft: "${currentText || ''}"
+
+Make it punchy, engaging, scannable, and under 20 words.
+Return ONLY the slide text with no quotes or extra conversational commentary.`;
+
+  try {
+    if (isPuterAvailable()) {
+      const response = await window.puter!.ai.chat(promptText);
+      let outputText = typeof response === 'string' ? response : response?.message?.content || response?.toString() || '';
+      if (outputText.trim()) {
+        return outputText.trim().replace(/^["']|["']$/g, '');
+      }
+    }
+  } catch (err) {
+    console.warn('Puter AI single slide generation failed:', err);
+  }
+
+  return currentText ? `${currentText} ✨` : `Slide #${slideIndex + 1}: Key insight on ${topic}`;
+}
+
+/**
  * Generate Platform-Specific Copy via Puter.js or Fallback AI
  */
 export async function generateAICopy(req: AICopyRequest): Promise<{ copy: string; title: string; variants: string[]; hashtags: string[] }> {

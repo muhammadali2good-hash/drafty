@@ -217,7 +217,7 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
                       {draft.body}
                     </p>
 
-                    {/* Email Subject / Reddit Tag Extras */}
+                    {/* Email Subject / Reddit Tag Extras / Instagram Carousel Slides */}
                     {draft.emailSubject && (
                       <div className="p-2 bg-amber-50 dark:bg-amber-950/40 rounded-lg text-[11px] font-bold text-amber-800 dark:text-amber-300">
                         Subject: {draft.emailSubject}
@@ -226,6 +226,26 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
                     {draft.redditSubreddit && (
                       <div className="inline-block px-2 py-0.5 bg-orange-50 dark:bg-orange-950/40 rounded text-[10px] font-bold text-orange-700 dark:text-orange-300">
                         {draft.redditSubreddit}
+                      </div>
+                    )}
+                    {draft.instagramCarouselSlides && draft.instagramCarouselSlides.length > 0 && (
+                      <div className="space-y-1.5 pt-1">
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-pink-600 dark:text-pink-400">
+                          <ImageIcon className="w-3 h-3 text-pink-500" />
+                          <span>{draft.instagramCarouselSlides.length} Carousel Slides (Puter AI generated)</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {draft.instagramCarouselSlides.slice(0, 3).map((slide, sIdx) => (
+                            <span key={sIdx} className="px-2 py-0.5 rounded-md bg-pink-50 dark:bg-pink-950/40 text-pink-700 dark:text-pink-300 border border-pink-200/60 dark:border-pink-800/60 text-[10px] truncate max-w-[180px]">
+                              S{sIdx + 1}: {slide}
+                            </span>
+                          ))}
+                          {draft.instagramCarouselSlides.length > 3 && (
+                            <span className="text-[10px] text-pink-500 self-center font-bold">
+                              +{draft.instagramCarouselSlides.length - 3} more
+                            </span>
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>

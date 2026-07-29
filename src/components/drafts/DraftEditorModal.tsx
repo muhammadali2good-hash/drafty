@@ -22,6 +22,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { Draft, PlatformType, MediaItem, DraftStatus } from '../../types';
+import { generateInstagramCarouselSlides, generateSingleSlideAI } from '../../lib/puterAI';
 
 interface DraftEditorModalProps {
   isOpen: boolean;
@@ -158,7 +159,10 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
     setThreadItems(threadItems.filter((_, i) => i !== index));
   };
 
-  // Carousel slides
+  // Carousel slides state & Puter AI handlers
+  const [isGeneratingAllSlides, setIsGeneratingAllSlides] = useState(false);
+  const [generatingSlideIndex, setGeneratingSlideIndex] = useState<number | null>(null);
+
   const handleAddCarouselSlide = () => {
     setCarouselSlides([...carouselSlides, `Slide ${carouselSlides.length + 1}`]);
   };
@@ -171,6 +175,39 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
 
   const handleRemoveCarouselSlide = (index: number) => {
     setCarouselSlides(carouselSlides.filter((_, i) => i !== index));
+  };
+
+  const handleGenerateAllCarouselSlidesAI = async () => {
+    setIsGeneratingAllSlides(true);
+    try {
+      const topic = title.trim() || body.trim() || 'Instagram Content Strategy';
+      const slides = await generateInstagramCarouselSlides(topic, 5);
+      if (slides && slides.length > 0) {
+        setCarouselSlides(slides);
+      }
+    } catch (err) {
+      console.error('Failed to generate slides via Puter AI:', err);
+    } finally {
+      setIsGeneratingAllSlides(false);
+    }
+  };
+
+  const handleGenerateSingleSlideAI = async (index: number) => {
+    setGeneratingSlideIndex(index);
+    try {
+      const topic = title.trim() || body.trim() || 'Instagram Content';
+      const currentVal = carouselSlides[index];
+      const newSlide = await generateSingleSlideAI(topic, index, currentVal);
+      if (newSlide) {
+        const copy = [...carouselSlides];
+        copy[index] = newSlide;
+        setCarouselSlides(copy);
+      }
+    } catch (err) {
+      console.error('Failed to generate single slide via Puter AI:', err);
+    } finally {
+      setGeneratingSlideIndex(null);
+    }
   };
 
   const handleSaveSubmit = () => {
@@ -483,44 +520,74 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
                     </div>
 
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
                           <ImageIcon className="w-4 h-4 text-pink-500" />
                           Carousel Slide Cards ({carouselSlides.length})
                         </span>
-                        <button
-                          onClick={handleAddCarouselSlide}
-                          className="h-8 px-3 rounded-btn bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-300 border border-pink-200 dark:border-pink-800 text-xs font-semibold flex items-center gap-1.5"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                          <span>Add Slide</span>
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={handleGenerateAllCarouselSlidesAI}
+                            disabled={isGeneratingAllSlides}
+                            className="h-8 px-3 rounded-btn bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                            title="Generate 5-slide carousel using Puter AI"
+                          >
+                            <Sparkles className={`w-3.5 h-3.5 ${isGeneratingAllSlides ? 'animate-spin' : ''}`} />
+                            <span>{isGeneratingAllSlides ? 'Generating AI Slides...' : 'AI Generate Slides'}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={handleAddCarouselSlide}
+                            className="h-8 px-3 rounded-btn bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-300 border border-pink-200 dark:border-pink-800 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>Add Slide</span>
+                          </button>
+                        </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {carouselSlides.map((slide, idx) => (
                           <div
                             key={idx}
-                            className="p-3.5 rounded-card bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-2"
+                            className="p-3.5 rounded-card bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-2 relative group"
                           >
                             <div className="flex items-center justify-between">
                               <span className="text-xs font-bold text-pink-600 dark:text-pink-400">
                                 Slide #{idx + 1}
                               </span>
-                              {carouselSlides.length > 1 && (
+                              <div className="flex items-center gap-1.5">
                                 <button
-                                  onClick={() => handleRemoveCarouselSlide(idx)}
-                                  className="p-1 text-slate-400 hover:text-rose-500"
+                                  type="button"
+                                  onClick={() => handleGenerateSingleSlideAI(idx)}
+                                  disabled={generatingSlideIndex === idx}
+                                  className="px-2 py-0.5 rounded-md bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900/60 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800/80 text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                                  title="Refine this slide using Puter AI"
                                 >
-                                  <Trash2 className="w-3.5 h-3.5" />
+                                  <Sparkles className={`w-3 h-3 ${generatingSlideIndex === idx ? 'animate-spin' : ''}`} />
+                                  <span>{generatingSlideIndex === idx ? 'Generating...' : 'AI Refine'}</span>
                                 </button>
-                              )}
+
+                                {carouselSlides.length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveCarouselSlide(idx)}
+                                    className="p-1 text-slate-400 hover:text-rose-500 transition-colors"
+                                    title="Delete slide"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                )}
+                              </div>
                             </div>
-                            <input
-                              type="text"
+                            <textarea
+                              rows={2}
                               value={slide}
                               onChange={(e) => handleUpdateCarouselSlide(idx, e.target.value)}
-                              className="w-full bg-white dark:bg-slate-900 p-2.5 rounded-input border border-slate-200/80 dark:border-slate-800 text-xs"
+                              placeholder={`Slide #${idx + 1} text content...`}
+                              className="w-full bg-white dark:bg-slate-900 p-2.5 rounded-input border border-slate-200/80 dark:border-slate-800 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-pink-500 resize-none"
                             />
                           </div>
                         ))}
