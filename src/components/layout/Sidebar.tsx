@@ -14,6 +14,7 @@ import {
   Sparkles,
   HardDrive,
   Leaf,
+  Home,
 } from 'lucide-react';
 import { PlatformType } from '../../types';
 
@@ -27,6 +28,7 @@ interface SidebarProps {
 }
 
 const NAVIGATION_ITEMS: { id: PlatformType; label: string; icon: React.ElementType; color: string }[] = [
+  { id: 'landing', label: 'Landing Page', icon: Home, color: 'text-teal-400' },
   { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard, color: 'text-emerald-500' },
   { id: 'x', label: 'X (Twitter)', icon: Twitter, color: 'text-sky-400' },
   { id: 'reddit', label: 'Reddit', icon: MessageSquare, color: 'text-orange-500' },
@@ -51,7 +53,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Top Header & Brand */}
       <div className="space-y-6">
         <div className="flex items-center justify-between px-2">
-          <div className="flex items-center gap-3">
+          <div
+            className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => onSelectPlatform('landing')}
+            title="Go to Landing Page"
+          >
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold text-xl">
               <Leaf className="w-5 h-5" />
             </div>

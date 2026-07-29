@@ -14,6 +14,7 @@ interface HeaderProps {
 }
 
 const PLATFORM_INFO: Record<PlatformType, { title: string; subtitle: string; iconBg: string }> = {
+  landing: { title: 'Welcome to Drafty AI', subtitle: 'Multi-platform content studio powered by Puter AI', iconBg: 'bg-teal-500' },
   dashboard: { title: 'Dashboard Overview', subtitle: 'Global workspace metrics, pinned drafts & recent AI generations', iconBg: 'bg-emerald-500' },
   x: { title: 'X (Twitter) Workspace', subtitle: 'Draft 280-char tweets, multi-post thread builders & community notes', iconBg: 'bg-sky-500' },
   reddit: { title: 'Reddit Workspace', subtitle: 'Format discussion posts, AMA drafts & subreddit library notes', iconBg: 'bg-orange-500' },

@@ -12,11 +12,12 @@ import { DashboardHomeView } from './components/views/DashboardHomeView';
 import { PlatformWorkspaceView } from './components/views/PlatformWorkspaceView';
 import { TemplatesView } from './components/views/TemplatesView';
 import { SettingsView } from './components/views/SettingsView';
+import { LandingPageView } from './components/views/LandingPageView';
 import { StorageService } from './lib/storage';
 import { PlatformType, Draft, GeneratedImage, CommunityLink, ContentTemplate, UserPreferences } from './types';
 
 export default function App() {
-  const [currentPlatform, setCurrentPlatform] = useState<PlatformType>('dashboard');
+  const [currentPlatform, setCurrentPlatform] = useState<PlatformType>('landing');
   const [drafts, setDrafts] = useState<Draft[]>([]);
   const [images, setImages] = useState<GeneratedImage[]>([]);
   const [communities, setCommunities] = useState<CommunityLink[]>([]);
@@ -161,6 +162,7 @@ export default function App() {
 
   // Compute draft counts per platform
   const draftCounts: Record<PlatformType, number> = {
+    landing: 0,
     dashboard: drafts.length,
     x: drafts.filter((d) => d.platform === 'x').length,
     reddit: drafts.filter((d) => d.platform === 'reddit').length,
@@ -179,90 +181,102 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-emerald-50 font-sans selection:bg-emerald-500/20 selection:text-emerald-400">
-      {/* Fixed Apple-style Rounded Sidebar */}
-      <Sidebar
-        currentPlatform={currentPlatform}
-        onSelectPlatform={setCurrentPlatform}
-        onQuickCreate={handleOpenNewDraft}
-        onOpenAICopy={() => setIsAICopyOpen(true)}
-        draftCounts={draftCounts}
-        storageKB={storageKB}
-      />
-
-      {/* Main Workspace Frame */}
-      <div className="pl-[310px] pr-6 pt-4 min-h-screen flex flex-col">
-        {/* Header */}
-        <Header
-          currentPlatform={currentPlatform}
-          theme={prefs.theme}
-          onToggleTheme={handleToggleTheme}
-          onOpenSearch={() => setIsSearchOpen(true)}
+      {currentPlatform === 'landing' ? (
+        <LandingPageView
+          onEnterDashboard={(p) => setCurrentPlatform(p || 'dashboard')}
           onOpenAICopy={() => setIsAICopyOpen(true)}
           onOpenAIImage={() => setIsAIImageOpen(true)}
-          onOpenCommunities={() => setIsCommunitiesOpen(true)}
+          theme={prefs.theme}
+          onToggleTheme={handleToggleTheme}
         />
+      ) : (
+        <>
+          {/* Fixed Apple-style Rounded Sidebar */}
+          <Sidebar
+            currentPlatform={currentPlatform}
+            onSelectPlatform={setCurrentPlatform}
+            onQuickCreate={handleOpenNewDraft}
+            onOpenAICopy={() => setIsAICopyOpen(true)}
+            draftCounts={draftCounts}
+            storageKB={storageKB}
+          />
 
-        {/* Dynamic View Route */}
-        <main className="flex-1">
-          <AnimatePresence mode="wait">
-            {currentPlatform === 'dashboard' && (
-              <DashboardHomeView
-                key="dashboard"
-                drafts={drafts}
-                images={images}
-                communities={communities}
-                onSelectDraft={handleSelectDraft}
-                onSelectPlatform={setCurrentPlatform}
-                onQuickCreate={handleOpenNewDraft}
-                onOpenAICopy={() => setIsAICopyOpen(true)}
-                onOpenAIImage={() => setIsAIImageOpen(true)}
-                onDeleteImage={handleDeleteImage}
-                storageKB={storageKB}
-              />
-            )}
+          {/* Main Workspace Frame */}
+          <div className="pl-[310px] pr-6 pt-4 min-h-screen flex flex-col">
+            {/* Header */}
+            <Header
+              currentPlatform={currentPlatform}
+              theme={prefs.theme}
+              onToggleTheme={handleToggleTheme}
+              onOpenSearch={() => setIsSearchOpen(true)}
+              onOpenAICopy={() => setIsAICopyOpen(true)}
+              onOpenAIImage={() => setIsAIImageOpen(true)}
+              onOpenCommunities={() => setIsCommunitiesOpen(true)}
+            />
 
-            {currentPlatform === 'templates' && (
-              <TemplatesView
-                key="templates"
-                templates={templates}
-                onApplyTemplate={handleApplyTemplate}
-                onSaveNewTemplate={handleSaveNewTemplate}
-              />
-            )}
+            {/* Dynamic View Route */}
+            <main className="flex-1">
+              <AnimatePresence mode="wait">
+                {currentPlatform === 'dashboard' && (
+                  <DashboardHomeView
+                    key="dashboard"
+                    drafts={drafts}
+                    images={images}
+                    communities={communities}
+                    onSelectDraft={handleSelectDraft}
+                    onSelectPlatform={setCurrentPlatform}
+                    onQuickCreate={handleOpenNewDraft}
+                    onOpenAICopy={() => setIsAICopyOpen(true)}
+                    onOpenAIImage={() => setIsAIImageOpen(true)}
+                    onDeleteImage={handleDeleteImage}
+                    storageKB={storageKB}
+                  />
+                )}
 
-            {currentPlatform === 'settings' && (
-              <SettingsView
-                key="settings"
-                prefs={prefs}
-                onUpdatePrefs={(newPrefs) => {
-                  const updated = StorageService.savePreferences(newPrefs);
-                  setPrefs(updated);
-                }}
-                storageKB={storageKB}
-                onResetSampleData={handleResetSampleData}
-              />
-            )}
+                {currentPlatform === 'templates' && (
+                  <TemplatesView
+                    key="templates"
+                    templates={templates}
+                    onApplyTemplate={handleApplyTemplate}
+                    onSaveNewTemplate={handleSaveNewTemplate}
+                  />
+                )}
 
-            {['x', 'reddit', 'facebook', 'instagram', 'email', 'general'].includes(currentPlatform) && (
-              <PlatformWorkspaceView
-                key={currentPlatform}
-                platform={currentPlatform}
-                drafts={platformDrafts}
-                images={platformImages}
-                communities={platformCommunities}
-                onSelectDraft={handleSelectDraft}
-                onNewDraft={handleOpenNewDraft}
-                onOpenAICopy={() => setIsAICopyOpen(true)}
-                onOpenAIImage={() => setIsAIImageOpen(true)}
-                onTogglePin={handleTogglePinDraft}
-                onDeleteDraft={handleDeleteDraft}
-                onDeleteImage={handleDeleteImage}
-                onToggleFavouriteImage={handleToggleFavouriteImage}
-              />
-            )}
-          </AnimatePresence>
-        </main>
-      </div>
+                {currentPlatform === 'settings' && (
+                  <SettingsView
+                    key="settings"
+                    prefs={prefs}
+                    onUpdatePrefs={(newPrefs) => {
+                      const updated = StorageService.savePreferences(newPrefs);
+                      setPrefs(updated);
+                    }}
+                    storageKB={storageKB}
+                    onResetSampleData={handleResetSampleData}
+                  />
+                )}
+
+                {['x', 'reddit', 'facebook', 'instagram', 'email', 'general'].includes(currentPlatform) && (
+                  <PlatformWorkspaceView
+                    key={currentPlatform}
+                    platform={currentPlatform}
+                    drafts={platformDrafts}
+                    images={platformImages}
+                    communities={platformCommunities}
+                    onSelectDraft={handleSelectDraft}
+                    onNewDraft={handleOpenNewDraft}
+                    onOpenAICopy={() => setIsAICopyOpen(true)}
+                    onOpenAIImage={() => setIsAIImageOpen(true)}
+                    onTogglePin={handleTogglePinDraft}
+                    onDeleteDraft={handleDeleteDraft}
+                    onDeleteImage={handleDeleteImage}
+                    onToggleFavouriteImage={handleToggleFavouriteImage}
+                  />
+                )}
+              </AnimatePresence>
+            </main>
+          </div>
+        </>
+      )}
 
       {/* Modals & Dialog Overlay Layer */}
       <CommandPalette

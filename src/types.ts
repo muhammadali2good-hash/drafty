@@ -1,4 +1,5 @@
 export type PlatformType =
+  | 'landing'
   | 'dashboard'
   | 'x'
   | 'reddit'

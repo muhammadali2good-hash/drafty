@@ -36,6 +36,7 @@ interface PlatformWorkspaceViewProps {
 }
 
 const PLATFORM_DETAILS: Record<PlatformType, { title: string; desc: string; quickLabel: string; bgBadge: string }> = {
+  landing: { title: 'Landing', desc: '', quickLabel: 'New Draft', bgBadge: 'bg-teal-500' },
   dashboard: { title: 'Dashboard', desc: '', quickLabel: 'New Draft', bgBadge: 'bg-emerald-500' },
   x: { title: 'X (Twitter)', desc: 'Draft 280-char tweets, build multi-post threads & community notes.', quickLabel: 'Build Thread / Tweet', bgBadge: 'bg-sky-500' },
   reddit: { title: 'Reddit', desc: 'Craft authentic discussion posts, AMA drafts & store subreddit rules.', quickLabel: 'Draft Reddit Post', bgBadge: 'bg-orange-500' },
