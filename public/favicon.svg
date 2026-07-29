@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="url(#emeraldGrad)" />
+  <g fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 78 A26 26 0 0 1 43.2 26.4 C66 22 72 20 80 10 C84 18 88 26.7 88 42 C88 62 68.9 78 48 78 Z" />
+    <path d="M18 82 C18 70 25.4 60.6 38.3 58 C48 56.1 58 50 62 46" />
+  </g>
+</svg>
