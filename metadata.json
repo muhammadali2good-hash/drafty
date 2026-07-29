@@ -1,0 +1,6 @@
+{
+  "name": "Bloome Draft Workspace",
+  "description": "A premium AI-powered content draft workspace for creators with platform-specific tools, AI copy and image generators, community libraries, and rich draft management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
