@@ -48,12 +48,25 @@ export interface Draft {
 export interface GeneratedImage {
   id: string;
   prompt: string;
+  expandedPrompt?: string;
   url: string;
   date: string;
   platform: PlatformType;
   favourite: boolean;
   style: string;
   aspectRatio: string;
+  brandCategory?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  bgColor?: string;
+  lighting?: string;
+  camera?: string;
+  depth?: string;
+  composition?: string;
+  negativePrompt?: string;
+  generationTime?: string;
+  fileSize?: string;
   mood?: string;
   brandColors?: string;
 }

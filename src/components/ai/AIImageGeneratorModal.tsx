@@ -49,7 +49,7 @@ export const AIImageGeneratorModal: React.FC<AIImageGeneratorModalProps> = ({
     setSavedImage(null);
 
     try {
-      const url = await generateAIImage({
+      const result = await generateAIImage({
         prompt,
         style,
         mood,
@@ -57,12 +57,14 @@ export const AIImageGeneratorModal: React.FC<AIImageGeneratorModalProps> = ({
         platform,
       });
 
+      const url = result.url;
       setGeneratedUrl(url);
 
       // Auto create object
       const newImgObj: GeneratedImage = {
         id: `img-${Date.now()}`,
         prompt,
+        expandedPrompt: result.expandedPrompt,
         url,
         date: new Date().toISOString(),
         platform,

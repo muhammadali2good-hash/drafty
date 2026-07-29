@@ -25,11 +25,26 @@ export interface AICopyRequest {
 
 export interface AIImageRequest {
   prompt: string;
-  style?: string;
-  mood?: string;
-  aspectRatio?: string;
-  brandColors?: string;
   platform: PlatformType;
+  style?: string;
+  brandCategory?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  bgColor?: string;
+  lighting?: string;
+  camera?: string;
+  depth?: string;
+  composition?: string;
+  negativePrompt?: string;
+  aspectRatio?: string;
+  mood?: string;
+  brandColors?: string;
+}
+
+export interface AIImageResult {
+  url: string;
+  expandedPrompt: string;
 }
 
 // Check Puter availability
@@ -90,12 +105,79 @@ Return the copy directly with no conversational fluff.`;
 }
 
 /**
- * Generate Image via Puter.js AI with automatic fallback to Pollinations AI Engine
+ * Builds an automated, structured prompt for Puter AI
  */
-export async function generateAIImage(req: AIImageRequest): Promise<string> {
-  const { prompt, style = 'Modern Illustration', mood = 'Clean & Aesthetic', aspectRatio = '16:9', platform } = req;
-  const fullPrompt = `${prompt}, style: ${style}, mood: ${mood}, platform: ${platform}, high resolution, 8k quality, aesthetic graphic design`;
+export function buildStructuredPrompt(req: AIImageRequest): string {
+  const {
+    prompt,
+    platform,
+    aspectRatio = '16:9',
+    style = 'Modern',
+    brandCategory = 'Technology',
+    primaryColor = '#10b981',
+    secondaryColor = '#064e3b',
+    accentColor = '#14b8a6',
+    bgColor = '#040806',
+    lighting = 'Studio',
+    camera = 'Wide',
+    depth = 'Deep',
+    composition = 'Centered',
+    negativePrompt = 'blurry, low quality, watermark, extra fingers, cropped, text, logo, distorted, bad anatomy, duplicate objects, low resolution, poor lighting, compression artifacts',
+  } = req;
 
+  return `Create a high quality ${style} style marketing image for ${brandCategory}.
+
+Purpose: Social media marketing graphic.
+Platform: ${platform.toUpperCase()}
+Aspect Ratio: ${aspectRatio}
+Brand Category: ${brandCategory}
+Visual Style: ${style}
+Brand Palette: Primary ${primaryColor}, Secondary ${secondaryColor}, Accent ${accentColor}, Background ${bgColor}
+User Concept: ${prompt}
+Lighting: ${lighting}
+Camera Angle: ${camera}
+Depth of Field: ${depth}
+Composition: ${composition}
+${negativePrompt ? `Negative Prompt (Avoid): ${negativePrompt}\n` : ''}
+Requirements: High resolution 8k quality, professional graphic composition, balanced spacing, no watermark, no text artifacts, modern studio lighting, marketing ready, crisp details.`;
+}
+
+/**
+ * Generate Image via Puter.js AI (puter.ai.txt2img)
+ */
+export async function generateAIImage(req: AIImageRequest): Promise<AIImageResult> {
+  const structuredPrompt = buildStructuredPrompt(req);
+
+  // 1. Official Puter.js AI txt2img Call
+  if (isPuterAvailable()) {
+    try {
+      const imgRes = await window.puter!.ai.txt2img(structuredPrompt);
+      if (imgRes) {
+        let imageUrl = '';
+        if (typeof imgRes === 'string' && imgRes.length > 0) {
+          imageUrl = imgRes;
+        } else if (imgRes instanceof HTMLImageElement && imgRes.src) {
+          imageUrl = imgRes.src;
+        } else if (typeof imgRes === 'object' && imgRes !== null) {
+          if ('src' in imgRes && typeof (imgRes as any).src === 'string' && (imgRes as any).src) {
+            imageUrl = (imgRes as any).src;
+          } else if ('url' in imgRes && typeof (imgRes as any).url === 'string' && (imgRes as any).url) {
+            imageUrl = (imgRes as any).url;
+          }
+        }
+        if (imageUrl) {
+          return { url: imageUrl, expandedPrompt: structuredPrompt };
+        }
+      }
+    } catch (err: any) {
+      console.error('Puter AI image generation failed:', err);
+      const errMsg = err?.message || err?.toString() || 'Puter AI generation error';
+      throw new Error(`Puter AI Error: ${errMsg}`);
+    }
+  }
+
+  // 2. Real-time AI image generation fallback using Pollinations AI engine with exact structured prompt
+  const { aspectRatio = '16:9' } = req;
   let w = 1200;
   let h = 675;
   if (aspectRatio === '1:1') { w = 800; h = 800; }
@@ -106,33 +188,10 @@ export async function generateAIImage(req: AIImageRequest): Promise<string> {
   else if (aspectRatio === '2:3') { w = 600; h = 900; }
   else if (aspectRatio === '21:9') { w = 1260; h = 540; }
 
-  // 1. Attempt Puter.js AI txt2img if available in window environment
-  try {
-    if (isPuterAvailable()) {
-      const imgRes = await window.puter!.ai.txt2img(fullPrompt);
-      if (imgRes) {
-        if (typeof imgRes === 'string' && imgRes.length > 0) {
-          return imgRes;
-        }
-        if (typeof imgRes === 'object' && imgRes !== null) {
-          if ('src' in imgRes && typeof (imgRes as any).src === 'string' && (imgRes as any).src) {
-            return (imgRes as any).src;
-          }
-          if ('url' in imgRes && typeof (imgRes as any).url === 'string' && (imgRes as any).url) {
-            return (imgRes as any).url;
-          }
-        }
-      }
-    }
-  } catch (err) {
-    console.warn('Puter AI image call unavailable, switching to real-time AI image generation engine:', err);
-  }
+  const seed = Math.floor(Math.random() * 10000000);
+  const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(structuredPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&enhance=true`;
 
-  // 2. Real-time AI Image Generation using Pollinations AI (Unique image generated per prompt and seed)
-  const randomSeed = Math.floor(Math.random() * 10000000);
-  const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${randomSeed}&nologo=true&enhance=true`;
-
-  return pollinationsUrl;
+  return { url: pollinationsUrl, expandedPrompt: structuredPrompt };
 }
 
 /**
