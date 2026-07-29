@@ -96,17 +96,17 @@ export const AICopyGeneratorModal: React.FC<AICopyGeneratorModalProps> = ({
           initial={{ opacity: 0, scale: 0.96, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 10 }}
-          className="w-full max-w-4xl max-h-[90vh] glass-panel bg-white dark:bg-slate-900 rounded-modal shadow-2xl overflow-hidden flex flex-col border border-slate-200/80 dark:border-slate-800"
+          className="w-full max-w-4xl max-h-[90vh] glass-panel bg-white dark:bg-black rounded-modal shadow-2xl overflow-hidden flex flex-col border border-slate-200/80 dark:border-emerald-500/40"
         >
           {/* Header */}
-          <div className="p-6 border-b border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
+          <div className="p-6 border-b border-slate-200/60 dark:border-emerald-500/20 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
-                  Bloome AI Copy Generator
+                  Drafty AI Copy Generator
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Powered by Puter AI • Zero API Keys • Platform Rules Respecting
@@ -340,7 +340,7 @@ export const AICopyGeneratorModal: React.FC<AICopyGeneratorModalProps> = ({
                       Enter your topic and click Generate
                     </p>
                     <p className="text-[11px] text-slate-400 dark:text-slate-500 max-w-xs">
-                      Bloome AI formats copy for platform rules (280 chars for X, Threads, Reddit discussion style, IG Carousel hooks).
+                      Drafty AI formats copy for platform rules (280 chars for X, Threads, Reddit discussion style, IG Carousel hooks).
                     </p>
                   </div>
                 )}

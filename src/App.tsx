@@ -45,8 +45,8 @@ export default function App() {
   useEffect(() => {
     reloadStorage();
     const handleStorageUpdate = () => reloadStorage();
-    window.addEventListener('bloome_storage_update', handleStorageUpdate);
-    return () => window.removeEventListener('bloome_storage_update', handleStorageUpdate);
+    window.addEventListener('drafty_storage_update', handleStorageUpdate);
+    return () => window.removeEventListener('drafty_storage_update', handleStorageUpdate);
   }, []);
 
   // Theme synchronization
@@ -168,7 +168,7 @@ export default function App() {
   const platformCommunities = currentPlatform === 'dashboard' ? communities : communities.filter((c) => c.platform === currentPlatform);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#090d16] text-slate-900 dark:text-slate-100 font-sans selection:bg-emerald-500/20 selection:text-emerald-700">
+    <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-emerald-50 font-sans selection:bg-emerald-500/20 selection:text-emerald-400">
       {/* Fixed Apple-style Rounded Sidebar */}
       <Sidebar
         currentPlatform={currentPlatform}
@@ -302,9 +302,9 @@ export default function App() {
         whileTap={{ scale: 0.95 }}
         onClick={handleOpenNewDraft}
         title="Quick New Draft"
-        className="fixed bottom-8 right-8 w-16 h-16 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/80 dark:border-slate-700/60 rounded-[24px] flex items-center justify-center shadow-[0_12px_40px_rgba(0,0,0,0.12)] cursor-pointer z-40 transition-all"
+        className="fixed bottom-8 right-8 w-16 h-16 bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-500 dark:hover:bg-emerald-400 text-white rounded-[24px] flex items-center justify-center shadow-[0_12px_30px_rgba(16,185,129,0.35)] cursor-pointer z-40 transition-all"
       >
-        <Plus className="w-7 h-7 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
+        <Plus className="w-7 h-7 stroke-[2.5]" />
       </motion.button>
     </div>
   );

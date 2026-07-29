@@ -68,10 +68,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -20 }}
           transition={{ duration: 0.2 }}
-          className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-modal border border-slate-200/80 dark:border-slate-800 shadow-2xl overflow-hidden glass-panel"
+          className="w-full max-w-2xl bg-white dark:bg-black rounded-modal border border-slate-200/80 dark:border-emerald-500/40 shadow-2xl overflow-hidden glass-panel"
         >
           {/* Input Bar */}
-          <div className="p-4 border-b border-slate-200/60 dark:border-slate-800 flex items-center gap-3">
+          <div className="p-4 border-b border-slate-200/60 dark:border-emerald-500/20 flex items-center gap-3">
             <Search className="w-5 h-5 text-emerald-500 ml-2" />
             <input
               type="text"

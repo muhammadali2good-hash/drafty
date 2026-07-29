@@ -8,287 +8,17 @@ import {
   PlatformType,
 } from '../types';
 
-const DRAFTS_KEY = 'bloome_drafts_v1';
-const IMAGES_KEY = 'bloome_images_v1';
-const COPIES_KEY = 'bloome_copies_v1';
-const COMMUNITIES_KEY = 'bloome_communities_v1';
-const TEMPLATES_KEY = 'bloome_templates_v1';
-const PREFS_KEY = 'bloome_prefs_v1';
+const DRAFTS_KEY = 'drafty_drafts_v1';
+const IMAGES_KEY = 'drafty_images_v1';
+const COPIES_KEY = 'drafty_copies_v1';
+const COMMUNITIES_KEY = 'drafty_communities_v1';
+const TEMPLATES_KEY = 'drafty_templates_v1';
+const PREFS_KEY = 'drafty_prefs_v1';
 
-// Pre-seeded initial data for creator workspace
-const INITIAL_DRAFTS: Draft[] = [
-  {
-    id: 'draft-x-1',
-    title: '🚀 10 Lessons from Scaling an AI Product to 50k Users',
-    body: `1/ Building AI products isn't about raw prompt length—it's about reducing latency and micro-friction. Here are 10 non-obvious lessons from scaling to 50k MAU in 3 months 👇\n\n2/ UX beat raw accuracy 9 times out of 10. Users prefer a fast 90% accurate model over a 15-second wait for 98% accuracy.\n\n3/ Local-first data caching is your competitive moat. Keep user drafts and generated outputs cached right in browser memory for instant feel.`,
-    platform: 'x',
-    tags: ['BuildingInPublic', 'SaaS', 'AI'],
-    pinned: true,
-    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    updatedAt: new Date(Date.now() - 1800000).toISOString(),
-    status: 'ready',
-    folder: 'Tech Thoughts',
-    media: [
-      {
-        id: 'm1',
-        url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
-        type: 'image',
-        name: 'architecture_diagram.jpg',
-        size: '1.2 MB',
-      },
-    ],
-    threadItems: [
-      "1/ Building AI products isn't about raw prompt length—it's about reducing latency and micro-friction. Here are 10 non-obvious lessons from scaling to 50k MAU in 3 months 👇",
-      '2/ UX beat raw accuracy 9 times out of 10. Users prefer a fast 90% accurate model over a 15-second wait for 98% accuracy.',
-      '3/ Local-first data caching is your competitive moat. Keep user drafts and generated outputs cached right in browser memory for instant feel.',
-      '4/ If you found this useful, retweet the first tweet and follow for more weekly deep dives!',
-    ],
-    characterCount: 612,
-  },
-  {
-    id: 'draft-x-2',
-    title: 'Poll: What is your primary bottleneck in content production?',
-    body: 'Creator poll on weekly content bottlenecks.',
-    platform: 'x',
-    tags: ['CreatorEconomy', 'Poll'],
-    pinned: false,
-    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 12).toISOString(),
-    status: 'draft',
-    pollOptions: ['Generating Image Assets', 'Writing Engaging Hooks', 'Platform Formatting', 'Consistency & Distribution'],
-    characterCount: 140,
-    media: [],
-  },
-  {
-    id: 'draft-reddit-1',
-    title: 'How we redesigned our creative workspace for deep focus and zero clutter (Detailed Walkthrough)',
-    body: `Hey r/SideProject and r/webdev!
-
-Over the past 6 months, our team was frustrated by traditional dashboard bloat—heavy sidebars, dense data tables, and cluttered widgets that killed creative momentum.
-
-We took inspiration from Apple's minimalist desktop design language:
-- **Generous Spacing:** 24-32px section gaps so every module breathes.
-- **Liquid Glass Containers:** Soft 22-28px rounded corners with backdrop blur instead of harsh lines.
-- **Isolated Platform Context:** Each social network (X, Reddit, Instagram, FB, Email) gets its own dedicated, clean workspace.
-
-Here is what we learned about local browser databases and zero-backend AI generation...`,
-    platform: 'reddit',
-    tags: ['UIUX', 'WebDev', 'Showcase'],
-    pinned: true,
-    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    status: 'ready',
-    redditSubreddit: 'r/SideProject',
-    redditPostType: 'discussion',
-    media: [
-      {
-        id: 'm2',
-        url: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80',
-        type: 'image',
-        name: 'dashboard_preview.png',
-        size: '2.4 MB',
-      },
-    ],
-  },
-  {
-    id: 'draft-ig-1',
-    title: '✨ 5 Aesthetic Design Rules for 2026 Content Creators',
-    body: `Stop overcrowding your visuals! 🎨 Here are the 5 minimalist design rules every creator needs to know:
-
-Slide 1: High Contrast Neutrals + Vibrant Accent
-Slide 2: 24px+ Generous Corner Radii
-Slide 3: One Clear Focal Point Per Graphic
-Slide 4: Optical Padding & Negative Space
-Slide 5: Micro-Animations over Flashy Effects
-
-Save this reel for your next visual draft! 📌 #DesignTips #ContentCreator #AestheticUI #VisualBranding`,
-    platform: 'instagram',
-    tags: ['VisualDesign', 'Carousel', 'Aesthetic'],
-    pinned: true,
-    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 3).toISOString(),
-    status: 'ready',
-    folder: 'Visual Guides',
-    instagramCarouselSlides: [
-      'Slide 1: High Contrast Neutrals + Vibrant Emerald Accent',
-      'Slide 2: 24px+ Generous Corner Radii for Apple-level Software Feel',
-      'Slide 3: One Clear Focal Point Per Graphic with 1:1 Aspect Ratio',
-      'Slide 4: Optical Padding & Generous Whitespace (No Cramped Cards)',
-      'Slide 5: Micro-Animations & Soft Scaling for 120fps Feel',
-    ],
-    media: [
-      {
-        id: 'm3',
-        url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
-        type: 'image',
-        name: 'carousel_cover.jpg',
-        size: '1.8 MB',
-      },
-    ],
-  },
-  {
-    id: 'draft-fb-1',
-    title: '📢 Big Announcement: Introducing Our Local-First Creative OS',
-    body: `We are thrilled to announce our major release! 🎉
-
-For creators who value speed, privacy, and zero distraction, we've built a dedicated Content Draft Workspace. 
-
-No monthly API subscriptions required, no clunky backend databases. Everything stays locked inside your browser's private local database.
-
-Check out the full showcase and join our early creator round! 👇`,
-    platform: 'facebook',
-    tags: ['ProductLaunch', 'Announcement'],
-    pinned: false,
-    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 10).toISOString(),
-    status: 'draft',
-    facebookType: 'announcement',
-    media: [],
-  },
-  {
-    id: 'draft-email-1',
-    title: 'Issue #42: The Art of Asynchronous Creation & Calm Dashboards',
-    body: `Hi Creator,
-
-In this edition of The Asynchronous Mind, we explore why modern creator tools are moving away from noisy notifications and towards calm, private draft spaces.
-
-### Highlights:
-1. Why local-first software feels 10x faster.
-2. The psychology of isolated platform workspaces (writing for Reddit vs writing for Email).
-3. How to build reusable copy templates that don't sound like AI slop.
-
-Read the full edition below.`,
-    platform: 'email',
-    tags: ['Newsletter', 'WeeklyDigest'],
-    pinned: true,
-    createdAt: new Date(Date.now() - 3600000 * 30).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 4).toISOString(),
-    status: 'ready',
-    emailSubject: 'The Art of Asynchronous Creation & Calm Dashboards 🌿',
-    emailPreviewText: 'Why modern creator tools are moving away from noisy dashboards towards private, local-first workspaces.',
-    media: [],
-  },
-  {
-    id: 'draft-gen-1',
-    title: '💡 Brainstorm: Future Feature Roadmap & Copy Snippets',
-    body: `# Content OS Ideas & Research Notes
-
-- [x] Implement liquid glass card styling with 22-28px radius
-- [x] Puter.js browser AI integration for copy & image generation
-- [ ] Add SVG banner export module
-- [ ] Expand template tags with custom collections
-
-### Quick Copy Snippet:
-"Where minimalist engineering meets distraction-free content creation."`,
-    platform: 'general',
-    tags: ['Roadmap', 'Ideas', 'Notes'],
-    pinned: true,
-    createdAt: new Date(Date.now() - 3600000 * 40).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 1).toISOString(),
-    status: 'draft',
-    folder: 'Product Strategy',
-    media: [],
-  },
-];
-
-const INITIAL_IMAGES: GeneratedImage[] = [
-  {
-    id: 'img-1',
-    prompt: 'A sleek modern minimal glass studio with lush green plants, warm golden soft light, photorealistic 8k',
-    url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-    date: new Date(Date.now() - 3600000 * 6).toISOString(),
-    platform: 'instagram',
-    favourite: true,
-    style: 'Minimal Graphic',
-    aspectRatio: '1:1',
-    mood: 'Calm & Professional',
-  },
-  {
-    id: 'img-2',
-    prompt: 'Futuristic abstract liquid glass composition with soft emerald gradients and smooth lighting, 3D render',
-    url: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80',
-    date: new Date(Date.now() - 3600000 * 14).toISOString(),
-    platform: 'x',
-    favourite: true,
-    style: 'Modern Illustration',
-    aspectRatio: '16:9',
-    mood: 'Vibrant & Technological',
-  },
-  {
-    id: 'img-3',
-    prompt: 'Clean workspace aesthetic setup with laptop, notebook, coffee cup and soft sunlight shadow',
-    url: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80',
-    date: new Date(Date.now() - 3600000 * 22).toISOString(),
-    platform: 'email',
-    favourite: false,
-    style: 'Product Showcase',
-    aspectRatio: '16:9',
-    mood: 'Productive & Warm',
-  },
-];
-
-const INITIAL_COMMUNITIES: CommunityLink[] = [
-  {
-    id: 'comm-1',
-    name: 'r/SideProject',
-    url: 'https://reddit.com/r/SideProject',
-    platform: 'reddit',
-    category: 'Indie Hacking',
-    notes: 'Great community for feedback on early UI/UX and launch announcements. Best posting time: Tuesdays 8 AM EST.',
-    subscriberCount: '240k members',
-    pinned: true,
-    favourite: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'comm-2',
-    name: 'r/webdev',
-    url: 'https://reddit.com/r/webdev',
-    platform: 'reddit',
-    category: 'Engineering',
-    notes: 'Strict rules on self-promotion. Use Showoff Saturday thread for showcase posts.',
-    subscriberCount: '2.1M members',
-    pinned: false,
-    favourite: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'comm-3',
-    name: 'Tech Creator Circle',
-    url: 'https://x.com/i/communities/1234567',
-    platform: 'x',
-    category: 'X Communities',
-    notes: 'High engagement on short-form threads and product building lessons.',
-    subscriberCount: '15.4k members',
-    pinned: true,
-    favourite: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'comm-4',
-    name: 'SaaS Launchpad Group',
-    url: 'https://facebook.com/groups/saaslaunch',
-    platform: 'facebook',
-    category: 'Facebook Groups',
-    notes: 'Active founder audience interested in growth hacks and copy strategies.',
-    subscriberCount: '45k members',
-    pinned: false,
-    favourite: false,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'comm-5',
-    name: 'UI/UX Designers & Creators',
-    url: 'https://instagram.com/designers_hub',
-    platform: 'instagram',
-    category: 'Instagram Pages',
-    notes: 'Tag for carousel reshapes and design highlights.',
-    subscriberCount: '180k followers',
-    pinned: true,
-    favourite: true,
-    createdAt: new Date().toISOString(),
-  },
-];
+// Real initial state without mock data
+const INITIAL_DRAFTS: Draft[] = [];
+const INITIAL_IMAGES: GeneratedImage[] = [];
+const INITIAL_COMMUNITIES: CommunityLink[] = [];
 
 const INITIAL_TEMPLATES: ContentTemplate[] = [
   {
@@ -355,7 +85,7 @@ function getItem<T>(key: string, defaultVal: T): T {
 function setItem<T>(key: string, val: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(val));
-    window.dispatchEvent(new Event('bloome_storage_update'));
+    window.dispatchEvent(new Event('drafty_storage_update'));
   } catch (err) {
     console.error('Storage write error:', err);
   }
@@ -594,7 +324,7 @@ export const StorageService = {
     localStorage.removeItem(COMMUNITIES_KEY);
     localStorage.removeItem(TEMPLATES_KEY);
     localStorage.removeItem(PREFS_KEY);
-    window.dispatchEvent(new Event('bloome_storage_update'));
+    window.dispatchEvent(new Event('drafty_storage_update'));
   },
 
   getStorageSizeInKB(): number {

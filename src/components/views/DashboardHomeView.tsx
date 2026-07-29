@@ -62,20 +62,20 @@ export const DashboardHomeView: React.FC<DashboardHomeViewProps> = ({
   return (
     <div className="space-y-8 pb-12 animate-fade-in">
       {/* Hero Welcome Banner */}
-      <div className="relative rounded-container glass-panel p-8 overflow-hidden border border-emerald-500/20">
+      <div className="relative rounded-container glass-panel p-8 overflow-hidden border border-emerald-500/20 dark:border-emerald-500/30">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-transparent rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
               <Zap className="w-3.5 h-3.5" />
-              <span>Puter AI Active • Zero Backend • Offline First</span>
+              <span>Real-Time AI Studio • Private Storage Active</span>
             </div>
             <h1 className="font-display font-extrabold text-3xl md:text-4xl text-slate-900 dark:text-white tracking-tight leading-tight">
-              Welcome back to Bloome.
+              Welcome to Drafty Content OS
             </h1>
-            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Your distraction-free AI content workspace. Store ideas, draft platform-specific posts, generate copy variants, and store community resources.
+            <p className="text-sm text-slate-600 dark:text-emerald-200/80 leading-relaxed">
+              Your distraction-free AI content workspace. Create platform-specific drafts, generate instant copy, build visual assets, and manage community links in real time.
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export const DashboardHomeView: React.FC<DashboardHomeViewProps> = ({
               whileTap={{ scale: 0.96 }}
               onClick={onOpenAICopy}
               id="dashboard-hero-ai-copy-btn"
-              className="h-12 px-5 rounded-btn bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-200 text-sm font-semibold flex items-center gap-2 border border-slate-200/80 dark:border-slate-700 shadow-md transition-all cursor-pointer"
+              className="h-12 px-5 rounded-btn bg-white dark:bg-black hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-emerald-300 text-sm font-semibold flex items-center gap-2 border border-slate-200/80 dark:border-emerald-500/40 shadow-md transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-emerald-500" />
               <span>Generate Copy</span>
@@ -107,22 +107,22 @@ export const DashboardHomeView: React.FC<DashboardHomeViewProps> = ({
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-        <div className="p-5 rounded-card glass-card space-y-2">
+        <div className="p-5 rounded-card glass-card space-y-2 dark:bg-black/90 dark:border-emerald-500/30">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Drafts</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-emerald-400">Total Drafts</span>
             <FileText className="w-4 h-4 text-emerald-500" />
           </div>
           <p className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
             {drafts.length}
           </p>
           <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-            ~{totalWords.toLocaleString()} total words written
+            ~{totalWords.toLocaleString()} real-time total words
           </p>
         </div>
 
-        <div className="p-5 rounded-card glass-card space-y-2">
+        <div className="p-5 rounded-card glass-card space-y-2 dark:bg-black/90 dark:border-emerald-500/30">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Generated Images</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-emerald-400">Generated Images</span>
             <ImageIcon className="w-4 h-4 text-teal-500" />
           </div>
           <p className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
@@ -133,29 +133,29 @@ export const DashboardHomeView: React.FC<DashboardHomeViewProps> = ({
           </p>
         </div>
 
-        <div className="p-5 rounded-card glass-card space-y-2">
+        <div className="p-5 rounded-card glass-card space-y-2 dark:bg-black/90 dark:border-emerald-500/30">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Communities</span>
-            <Bookmark className="w-4 h-4 text-blue-500" />
+            <span className="text-xs font-semibold text-slate-500 dark:text-emerald-400">Communities</span>
+            <Bookmark className="w-4 h-4 text-emerald-400" />
           </div>
           <p className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
             {communities.length}
           </p>
-          <p className="text-[11px] text-blue-600 dark:text-blue-400 font-medium">
-            Subreddits, X & FB Groups
+          <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+            Saved forum & social links
           </p>
         </div>
 
-        <div className="p-5 rounded-card glass-card space-y-2">
+        <div className="p-5 rounded-card glass-card space-y-2 dark:bg-black/90 dark:border-emerald-500/30">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Chrome Storage</span>
-            <HardDrive className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-semibold text-slate-500 dark:text-emerald-400">Chrome DB Storage</span>
+            <HardDrive className="w-4 h-4 text-emerald-400" />
           </div>
           <p className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
             {storageKB} KB
           </p>
-          <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
-            Local browser database
+          <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+            Live local data footprint
           </p>
         </div>
       </div>

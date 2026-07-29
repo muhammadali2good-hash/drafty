@@ -27,14 +27,14 @@ interface SidebarProps {
 }
 
 const NAVIGATION_ITEMS: { id: PlatformType; label: string; icon: React.ElementType; color: string }[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'text-emerald-500' },
+  { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard, color: 'text-emerald-500' },
   { id: 'x', label: 'X (Twitter)', icon: Twitter, color: 'text-sky-400' },
   { id: 'reddit', label: 'Reddit', icon: MessageSquare, color: 'text-orange-500' },
   { id: 'facebook', label: 'Facebook', icon: Facebook, color: 'text-blue-500' },
   { id: 'instagram', label: 'Instagram', icon: Instagram, color: 'text-pink-500' },
-  { id: 'email', label: 'Email', icon: Mail, color: 'text-amber-500' },
-  { id: 'general', label: 'General Drafts', icon: FileText, color: 'text-emerald-600' },
-  { id: 'templates', label: 'Templates', icon: FileCode, color: 'text-purple-500' },
+  { id: 'email', label: 'Email Newsletter', icon: Mail, color: 'text-amber-500' },
+  { id: 'general', label: 'General Scratchpad', icon: FileText, color: 'text-emerald-600' },
+  { id: 'templates', label: 'Templates Library', icon: FileCode, color: 'text-purple-500' },
   { id: 'settings', label: 'Settings', icon: Settings, color: 'text-slate-400' },
 ];
 
@@ -57,7 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <div>
               <h1 className="font-display font-bold text-lg text-slate-900 dark:text-white leading-tight tracking-tight">
-                Bloome
+                Drafty
               </h1>
               <p className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
                 AI Content Workspace
@@ -87,7 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             whileTap={{ scale: 0.98 }}
             onClick={onOpenAICopy}
             id="sidebar-ai-copy-btn"
-            className="w-full h-10 rounded-btn bg-slate-100 dark:bg-slate-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium text-xs flex items-center justify-center gap-2 border border-slate-200/60 dark:border-slate-700/60 transition-all duration-200 cursor-pointer"
+            className="w-full h-10 rounded-btn bg-slate-100 dark:bg-emerald-950/40 hover:bg-emerald-50 dark:hover:bg-emerald-900/60 text-slate-700 dark:text-emerald-200 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium text-xs flex items-center justify-center gap-2 border border-slate-200/60 dark:border-emerald-500/30 transition-all duration-200 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
             <span>AI Copy Generator</span>
@@ -96,7 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Navigation List */}
         <nav className="space-y-1 overflow-y-auto max-h-[calc(100vh-380px)] pr-1">
-          <p className="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+          <p className="px-3 text-[11px] font-semibold text-slate-400 dark:text-emerald-400/70 uppercase tracking-wider mb-2">
             Workspaces
           </p>
 
@@ -114,8 +114,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 id={`nav-${item.id}`}
                 className={`w-full h-11 px-3.5 rounded-input flex items-center justify-between text-xs font-semibold transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100/80 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-sm'
+                    : 'text-slate-600 dark:text-emerald-100/90 hover:bg-slate-100/80 dark:hover:bg-emerald-950/40 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                       isActive
                         ? 'bg-emerald-500 text-white'
-                        : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                        : 'bg-slate-200/80 dark:bg-emerald-950/80 text-slate-600 dark:text-emerald-300 border border-transparent dark:border-emerald-800/40'
                     }`}
                   >
                     {count}
@@ -141,26 +141,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Local Storage Metric Box */}
-      <div className="pt-4 border-t border-slate-200/60 dark:border-slate-800/80 space-y-3">
-        <div className="p-3.5 rounded-card bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-800 space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-medium text-slate-500 dark:text-slate-400">
+      <div className="pt-4 border-t border-slate-200/60 dark:border-emerald-500/20 space-y-3">
+        <div className="p-3.5 rounded-card bg-slate-50/80 dark:bg-emerald-950/30 border border-slate-200/50 dark:border-emerald-500/20 space-y-2">
+          <div className="flex items-center justify-between text-[11px] font-medium text-slate-500 dark:text-emerald-300/80">
             <span className="flex items-center gap-1.5">
               <HardDrive className="w-3.5 h-3.5 text-emerald-500" />
               Chrome Local DB
             </span>
-            <span className="font-semibold text-slate-700 dark:text-slate-300">
+            <span className="font-semibold text-slate-700 dark:text-emerald-200">
               {storageKB} KB
             </span>
           </div>
 
-          <div className="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-200 dark:bg-emerald-950 h-1.5 rounded-full overflow-hidden">
             <div
               className="bg-emerald-500 h-full rounded-full transition-all duration-500"
               style={{ width: `${Math.min(100, Math.max(5, (storageKB / 500) * 100))}%` }}
             />
           </div>
 
-          <p className="text-[10px] text-slate-400 dark:text-slate-500">
+          <p className="text-[10px] text-slate-400 dark:text-emerald-400/60">
             100% Offline • Zero Backend Required
           </p>
         </div>

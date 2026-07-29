@@ -205,10 +205,10 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
           initial={{ opacity: 0, scale: 0.96, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
-          className="w-full max-w-5xl max-h-[92vh] glass-panel bg-white dark:bg-slate-900 rounded-modal shadow-2xl overflow-hidden flex flex-col border border-slate-200/80 dark:border-slate-800"
+          className="w-full max-w-5xl max-h-[92vh] glass-panel bg-white dark:bg-black rounded-modal shadow-2xl overflow-hidden flex flex-col border border-slate-200/80 dark:border-emerald-500/40"
         >
           {/* Top Bar Controls */}
-          <div className="px-6 py-4 border-b border-slate-200/60 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
+          <div className="px-6 py-4 border-b border-slate-200/60 dark:border-emerald-500/20 flex items-center justify-between bg-slate-50/50 dark:bg-black/90">
             <div className="flex items-center gap-3">
               {/* Platform Selector */}
               <select
@@ -638,8 +638,8 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
                             X
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-slate-900 dark:text-white">Bloome Creator</p>
-                            <p className="text-[10px] text-slate-400">@bloome_user • Tweet {idx + 1}</p>
+                            <p className="text-xs font-bold text-slate-900 dark:text-white">Drafty Creator</p>
+                            <p className="text-[10px] text-slate-400">@drafty_user • Tweet {idx + 1}</p>
                           </div>
                         </div>
                         <p className="text-xs text-slate-800 dark:text-slate-200 whitespace-pre-wrap">{item}</p>

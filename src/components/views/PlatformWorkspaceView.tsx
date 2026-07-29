@@ -104,7 +104,7 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
             whileTap={{ scale: 0.97 }}
             onClick={onOpenAICopy}
             id={`platform-${platform}-ai-copy-btn`}
-            className="h-11 px-3.5 rounded-btn bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 border border-slate-200/80 dark:border-slate-700 shadow-sm cursor-pointer"
+            className="h-11 px-3.5 rounded-btn bg-white dark:bg-emerald-950/40 hover:bg-emerald-50 dark:hover:bg-emerald-900/60 text-slate-700 dark:text-emerald-200 text-xs font-semibold flex items-center gap-2 border border-slate-200/80 dark:border-emerald-500/30 shadow-sm cursor-pointer"
           >
             <Sparkles className="w-4 h-4 text-emerald-500" />
             <span>AI Copy</span>
@@ -115,7 +115,7 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
             whileTap={{ scale: 0.97 }}
             onClick={onOpenAIImage}
             id={`platform-${platform}-ai-image-btn`}
-            className="h-11 px-3.5 rounded-btn bg-white dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-teal-950/40 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 border border-slate-200/80 dark:border-slate-700 shadow-sm cursor-pointer"
+            className="h-11 px-3.5 rounded-btn bg-white dark:bg-emerald-950/40 hover:bg-teal-50 dark:hover:bg-emerald-900/60 text-slate-700 dark:text-emerald-200 text-xs font-semibold flex items-center gap-2 border border-slate-200/80 dark:border-emerald-500/30 shadow-sm cursor-pointer"
           >
             <ImageIcon className="w-4 h-4 text-teal-500" />
             <span>AI Image</span>
@@ -128,7 +128,7 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
         {/* Left Column: Drafts */}
         <div className="lg:col-span-2 space-y-5">
           {/* Controls Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-card glass-panel border border-slate-200/60 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-card glass-panel border border-slate-200/60 dark:border-emerald-500/20">
             {/* Filter Tabs */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
               {(['all', 'draft', 'ready', 'review', 'archived'] as (DraftStatus | 'all')[]).map((st) => (
@@ -138,7 +138,7 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
                   className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
                     filterStatus === st
                       ? 'bg-emerald-500 text-white shadow-sm'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200/70'
+                      : 'bg-slate-100 dark:bg-emerald-950/60 text-slate-600 dark:text-emerald-300 hover:bg-slate-200/70 dark:hover:bg-emerald-900/40 border border-transparent dark:border-emerald-800/30'
                   }`}
                 >
                   {st}
@@ -148,13 +148,13 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
 
             {/* Search */}
             <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-slate-400" />
+              <Search className="w-4 h-4 text-slate-400 dark:text-emerald-400" />
               <input
                 type="text"
                 placeholder={`Search ${platform.toUpperCase()} drafts...`}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="h-8 px-2.5 rounded-input bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-xs focus:outline-none focus:border-emerald-500"
+                className="h-8 px-2.5 rounded-input bg-white dark:bg-emerald-950/50 border border-slate-200/80 dark:border-emerald-500/30 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-emerald-300/50 focus:outline-none focus:border-emerald-500"
               />
             </div>
           </div>
@@ -306,13 +306,13 @@ export const PlatformWorkspaceView: React.FC<PlatformWorkspaceViewProps> = ({
                     href={comm.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 rounded-card bg-white dark:bg-slate-800/80 hover:border-emerald-500 border border-slate-200/60 dark:border-slate-700 flex items-center justify-between text-xs font-semibold text-slate-800 dark:text-slate-200 transition-all"
+                    className="p-3 rounded-card bg-white dark:bg-emerald-950/40 hover:border-emerald-500 border border-slate-200/60 dark:border-emerald-500/30 flex items-center justify-between text-xs font-semibold text-slate-800 dark:text-emerald-200 transition-all"
                   >
                     <div>
                       <p className="font-bold text-emerald-600 dark:text-emerald-400">{comm.name}</p>
-                      <span className="text-[10px] text-slate-400">{comm.subscriberCount}</span>
+                      <span className="text-[10px] text-slate-400 dark:text-emerald-300/60">{comm.subscriberCount}</span>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-400 dark:text-emerald-400" />
                   </a>
                 ))}
               </div>

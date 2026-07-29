@@ -59,11 +59,11 @@ export const Header: React.FC<HeaderProps> = ({
           whileTap={{ scale: 0.98 }}
           onClick={onOpenSearch}
           id="header-global-search-btn"
-          className="h-11 px-4 rounded-input bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 text-slate-500 dark:text-slate-400 flex items-center gap-3 border border-slate-200/60 dark:border-slate-700/60 text-xs font-medium transition-all duration-200 cursor-pointer min-w-[200px]"
+          className="h-11 px-4 rounded-input bg-slate-100/80 dark:bg-emerald-950/40 hover:bg-slate-200/60 dark:hover:bg-emerald-900/60 text-slate-500 dark:text-emerald-200/90 flex items-center gap-3 border border-slate-200/60 dark:border-emerald-500/30 text-xs font-medium transition-all duration-200 cursor-pointer min-w-[200px]"
         >
-          <Search className="w-4 h-4 text-slate-400" />
+          <Search className="w-4 h-4 text-slate-400 dark:text-emerald-400" />
           <span>Search drafts, images...</span>
-          <div className="ml-auto flex items-center gap-1 text-[10px] bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded-md font-mono">
+          <div className="ml-auto flex items-center gap-1 text-[10px] bg-slate-200 dark:bg-emerald-900/80 text-slate-600 dark:text-emerald-300 px-1.5 py-0.5 rounded-md font-mono">
             <Command className="w-3 h-3" />
             <span>K</span>
           </div>
@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={onOpenCommunities}
           id="header-community-btn"
           title="Community Link Storage"
-          className="h-11 px-3.5 rounded-btn bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 flex items-center gap-2 border border-slate-200/60 dark:border-slate-700/60 text-xs font-medium transition-all duration-200 cursor-pointer"
+          className="h-11 px-3.5 rounded-btn bg-slate-100 dark:bg-emerald-950/40 hover:bg-emerald-50 dark:hover:bg-emerald-900/60 text-slate-700 dark:text-emerald-200 hover:text-emerald-600 dark:hover:text-emerald-300 flex items-center gap-2 border border-slate-200/60 dark:border-emerald-500/30 text-xs font-medium transition-all duration-200 cursor-pointer"
         >
           <Bookmark className="w-4 h-4 text-emerald-500" />
           <span className="hidden md:inline">Communities</span>
@@ -84,28 +84,28 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* AI Copy Trigger */}
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
           onClick={onOpenAICopy}
           id="header-ai-copy-btn"
-          title="Generate Copy"
-          className="h-11 px-3.5 rounded-btn bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 flex items-center gap-2 border border-emerald-200/60 dark:border-emerald-800/60 text-xs font-semibold transition-all duration-200 cursor-pointer"
+          title="Generate AI Copy"
+          aria-label="Generate AI Copy"
+          className="w-11 h-11 rounded-btn bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-200/60 dark:border-emerald-500/40 transition-all duration-200 cursor-pointer shadow-sm"
         >
-          <Sparkles className="w-4 h-4 text-emerald-500" />
-          <span className="hidden md:inline">AI Copy</span>
+          <Sparkles className="w-5 h-5 text-emerald-500" />
         </motion.button>
 
         {/* AI Image Trigger */}
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
           onClick={onOpenAIImage}
           id="header-ai-image-btn"
-          title="Generate Image"
-          className="h-11 px-3.5 rounded-btn bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center gap-2 border border-slate-200/60 dark:border-slate-700/60 text-xs font-semibold transition-all duration-200 cursor-pointer"
+          title="Generate AI Image"
+          aria-label="Generate AI Image"
+          className="w-11 h-11 rounded-btn bg-teal-50 dark:bg-teal-950/50 hover:bg-teal-100 dark:hover:bg-teal-900/70 text-teal-600 dark:text-teal-400 flex items-center justify-center border border-teal-200/60 dark:border-teal-500/40 transition-all duration-200 cursor-pointer shadow-sm"
         >
-          <ImageIcon className="w-4 h-4 text-teal-500" />
-          <span className="hidden md:inline">AI Image</span>
+          <ImageIcon className="w-5 h-5 text-teal-500" />
         </motion.button>
 
         {/* Theme Toggle */}
@@ -115,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={onToggleTheme}
           id="header-theme-toggle-btn"
           title="Toggle Dark / Light Mode"
-          className="w-11 h-11 rounded-btn bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center border border-slate-200/60 dark:border-slate-700/60 transition-all duration-200 cursor-pointer"
+          className="w-11 h-11 rounded-btn bg-slate-100 dark:bg-emerald-950/40 hover:bg-slate-200 dark:hover:bg-emerald-900/60 text-slate-700 dark:text-emerald-300 flex items-center justify-center border border-slate-200/60 dark:border-emerald-500/30 transition-all duration-200 cursor-pointer"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-500" />}
         </motion.button>

@@ -41,7 +41,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `bloome-workspace-backup-${Date.now()}.json`;
+    a.download = `drafty-workspace-backup-${Date.now()}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -103,7 +103,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           >
             <div className="flex items-center gap-2">
               <Sun className="w-4 h-4 text-amber-500" />
-              <span>Light Theme (Bloome Standard)</span>
+              <span>Light Theme (Drafty Standard)</span>
             </div>
             {prefs.theme === 'light' && <Check className="w-4 h-4 text-emerald-500" />}
           </button>
@@ -225,7 +225,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           Reset Workspace Data
         </h3>
         <p className="text-xs text-slate-600 dark:text-slate-400">
-          Restore initial Bloome creator sample drafts, templates, and community bookmarks.
+          Wipe all local drafts, generated images, templates, and community bookmarks.
         </p>
         <button
           onClick={onResetSampleData}

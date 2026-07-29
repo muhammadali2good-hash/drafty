@@ -85,7 +85,7 @@ export const AIImageGeneratorModal: React.FC<AIImageGeneratorModalProps> = ({
     if (!generatedUrl) return;
     const a = document.createElement('a');
     a.href = generatedUrl;
-    a.download = `bloome-image-${Date.now()}.jpg`;
+    a.download = `drafty-image-${Date.now()}.jpg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -98,17 +98,17 @@ export const AIImageGeneratorModal: React.FC<AIImageGeneratorModalProps> = ({
           initial={{ opacity: 0, scale: 0.96, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 10 }}
-          className="w-full max-w-4xl max-h-[90vh] glass-panel bg-white dark:bg-slate-900 rounded-modal shadow-2xl overflow-hidden flex flex-col border border-slate-200/80 dark:border-slate-800"
+          className="w-full max-w-4xl max-h-[90vh] glass-panel bg-white dark:bg-black rounded-modal shadow-2xl overflow-hidden flex flex-col border border-slate-200/80 dark:border-emerald-500/40"
         >
           {/* Header */}
-          <div className="p-6 border-b border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
+          <div className="p-6 border-b border-slate-200/60 dark:border-emerald-500/20 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center">
                 <ImageIcon className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
-                  Bloome AI Image Generator
+                  Drafty AI Image Generator
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Generate platform visuals via Puter AI • Zero API Keys Required

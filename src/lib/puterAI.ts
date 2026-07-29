@@ -43,7 +43,7 @@ export function isPuterAvailable(): boolean {
 export async function generateAICopy(req: AICopyRequest): Promise<{ copy: string; title: string; variants: string[]; hashtags: string[] }> {
   const { idea, audience = 'General Creators', goal = 'Engagement & Authority', tone = 'High Conversion', cta = 'Comment your thoughts below', keywords = '', platform } = req;
 
-  const promptText = `You are Bloome AI, an expert social copywriter.
+  const promptText = `You are Drafty AI, an expert social copywriter.
 Target Platform: ${platform.toUpperCase()}
 Core Idea: "${idea}"
 Audience: ${audience}
@@ -146,7 +146,7 @@ function extractHashtags(text: string, keywords: string): string[] {
   if (keywords) {
     return keywords.split(/[\s,]+/).filter(Boolean).map(k => `#${k.replace(/^#/, '')}`);
   }
-  return ['#ContentCreator', '#BloomeAI', '#Productivity'];
+  return ['#ContentCreator', '#DraftyAI', '#Productivity'];
 }
 
 function generateCopyVariants(mainText: string, platform: PlatformType): string[] {
@@ -165,16 +165,16 @@ function generateFallbackCopy(req: AICopyRequest): { copy: string; title: string
 
   if (platform === 'x') {
     title = `🚀 Thread: ${idea}`;
-    copy = `1/ ${idea}\n\nHere's why this matters for creators looking for ${goal.toLowerCase()} 👇\n\n2/ The biggest mistake most people make is ignoring micro-friction.\n\n3/ When you simplify your workflow with isolated platform tools, output doubles.\n\n4/ ${cta}! 🌿 #CreatorEconomy #BloomeAI`;
+    copy = `1/ ${idea}\n\nHere's why this matters for creators looking for ${goal.toLowerCase()} 👇\n\n2/ The biggest mistake most people make is ignoring micro-friction.\n\n3/ When you simplify your workflow with isolated platform tools, output doubles.\n\n4/ ${cta}! 🌿 #CreatorEconomy #DraftyAI`;
   } else if (platform === 'reddit') {
     title = `How we addressed ${idea} (Detailed breakdown)`;
     copy = `Hey everyone,\n\nI wanted to share our experience with ${idea}.\n\nGoal: ${goal}\nTone: ${tone}\n\n### Key Learnings:\n- Keep interfaces minimal with 24-28px rounded containers.\n- Focus on local-first data caching.\n- Eliminate clutter.\n\n${cta}`;
   } else if (platform === 'instagram') {
     title = `✨ ${idea}`;
-    copy = `✨ ${idea}\n\nSlide 1: The Core Concept\nSlide 2: Step-by-Step Execution\nSlide 3: Pro Tip for Creators\nSlide 4: Key Takeaway\n\n📌 Save this post for your next draft!\n💬 ${cta}\n\n#ContentCreator #VisualDesign #BloomeAI #CreatorWorkspace`;
+    copy = `✨ ${idea}\n\nSlide 1: The Core Concept\nSlide 2: Step-by-Step Execution\nSlide 3: Pro Tip for Creators\nSlide 4: Key Takeaway\n\n📌 Save this post for your next draft!\n💬 ${cta}\n\n#ContentCreator #VisualDesign #DraftyAI #CreatorWorkspace`;
   } else if (platform === 'email') {
     title = `Newsletter Draft: ${idea}`;
-    copy = `SUBJECT: ${idea} 🌿\nPREHEADER: Quick breakdown on ${goal}\n\nHi {{Name}},\n\nHope your week is going great!\n\nToday I wanted to dive into: ${idea}.\n\nKey takeaways:\n• Streamlined workflow\n• High engagement copy\n• Zero distraction\n\n${cta}\n\nBest,\nThe Bloome Team`;
+    copy = `SUBJECT: ${idea} 🌿\nPREHEADER: Quick breakdown on ${goal}\n\nHi {{Name}},\n\nHope your week is going great!\n\nToday I wanted to dive into: ${idea}.\n\nKey takeaways:\n• Streamlined workflow\n• High engagement copy\n• Zero distraction\n\n${cta}\n\nBest,\nThe Drafty Team`;
   } else {
     title = `Draft: ${idea}`;
     copy = `# ${idea}\n\n**Goal:** ${goal}\n**Tone:** ${tone}\n\n## Summary\n${idea} is designed to streamline creative output without unnecessary dashboard noise.\n\n## Action Plan\n- [ ] Review structure\n- [ ] Attach media assets\n- [ ] Publish to target channel`;
@@ -184,6 +184,6 @@ function generateFallbackCopy(req: AICopyRequest): { copy: string; title: string
     copy,
     title,
     variants: generateCopyVariants(copy, platform),
-    hashtags: ['#CreatorEconomy', '#BloomeAI', '#ContentWorkspace'],
+    hashtags: ['#CreatorEconomy', '#DraftyAI', '#ContentWorkspace'],
   };
 }
