@@ -161,6 +161,32 @@ export const AIImageGeneratorModal: React.FC<AIImageGeneratorModalProps> = ({
                   onChange={(e) => setPrompt(e.target.value)}
                   className="w-full p-3 rounded-input bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-white text-xs focus:outline-none focus:border-teal-500 transition-colors resize-none"
                 />
+
+                {/* Quick Mockup Prompt Presets */}
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  <span className="text-[10px] text-slate-400 dark:text-emerald-400/60 font-semibold self-center mr-1">
+                    Presets:
+                  </span>
+                  {[
+                    { label: 'SaaS Banner', text: 'SaaS Product Dashboard Banner with dark emerald glassmorphic UI elements and sleek metrics', ar: '16:9', st: 'Minimal Graphic' },
+                    { label: 'Quote Card', text: 'Minimalist inspiring creator quote card with ambient typography and dark gradient studio background', ar: '1:1', st: 'Quote Card' },
+                    { label: 'Infographic', text: 'Step-by-step content creation workflow visual with clean icon nodes and neon emerald accents', ar: '4:5', st: 'Infographic' },
+                    { label: 'Product Showcase', text: 'High luxury dark mode mobile application mockup floating in soft studio spotlight', ar: '9:16', st: 'Product Showcase' },
+                  ].map((preset) => (
+                    <button
+                      key={preset.label}
+                      type="button"
+                      onClick={() => {
+                        setPrompt(preset.text);
+                        setAspectRatio(preset.ar);
+                        setStyle(preset.st);
+                      }}
+                      className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-emerald-950/60 text-slate-600 dark:text-emerald-300 hover:bg-teal-50 dark:hover:bg-emerald-900/60 text-[10px] font-medium border border-slate-200/60 dark:border-emerald-500/30 transition-all cursor-pointer"
+                    >
+                      + {preset.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Style Selector */}

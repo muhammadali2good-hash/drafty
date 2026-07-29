@@ -90,47 +90,163 @@ Return the copy directly with no conversational fluff.`;
 }
 
 /**
- * Generate Image via Puter.js or High-Quality Unsplash / SVG / AI Canvas fallback
+ * Generate Image via Puter.js or High-Quality Procedural Canvas Mockup fallback
  */
 export async function generateAIImage(req: AIImageRequest): Promise<string> {
-  const { prompt, style = 'Modern Illustration', aspectRatio = '16:9', platform } = req;
-  const fullPrompt = `${prompt}, ${style} style, soft lighting, 8k quality, trending on artstation, aesthetic background`;
+  const { prompt, style = 'Modern Illustration', mood = 'Clean & Aesthetic', aspectRatio = '16:9', platform } = req;
+  const fullPrompt = `${prompt}, style: ${style}, mood: ${mood}, platform: ${platform}, 8k quality, aesthetic graphic design`;
 
   try {
     if (isPuterAvailable()) {
       const imgRes = await window.puter!.ai.txt2img(fullPrompt);
-      if (imgRes && imgRes.src) {
-        return imgRes.src;
-      } else if (typeof imgRes === 'string' && imgRes.startsWith('http')) {
-        return imgRes;
+      if (imgRes) {
+        if (typeof imgRes === 'string' && imgRes.length > 0) {
+          return imgRes;
+        }
+        if (typeof imgRes === 'object') {
+          if ('src' in imgRes && typeof (imgRes as any).src === 'string') {
+            return (imgRes as any).src;
+          }
+          if ('url' in imgRes && typeof (imgRes as any).url === 'string') {
+            return (imgRes as any).url;
+          }
+        }
       }
     }
   } catch (err) {
-    console.warn('Puter AI image call failed, using high-resolution aesthetic canvas fallback:', err);
+    console.warn('Puter AI image call failed or offline, rendering canvas mockup:', err);
   }
 
-  // High quality aesthetic fallback image URL based on prompt hash & keywords
-  const seed = encodeURIComponent(prompt.trim().toLowerCase().slice(0, 30));
-  const categoryMap: Record<string, string> = {
-    x: 'technology,minimal',
-    reddit: 'workspace,code',
-    instagram: 'design,aesthetic',
-    facebook: 'business,community',
-    email: 'office,desk',
-    general: 'abstract,glass',
-  };
-  const category = categoryMap[platform] || 'aesthetic';
+  // High quality procedural canvas mockup fallback
+  return generateCanvasMockupImage(req);
+}
 
-  // Dimension calculation by aspect ratio
+/**
+ * Generate a procedural visual graphic mockup based on user instructions and aspect ratio
+ */
+export function generateCanvasMockupImage(req: AIImageRequest): string {
+  const { prompt, style = 'Modern Illustration', mood = 'Aesthetic', aspectRatio = '16:9', platform } = req;
+
   let w = 1200;
-  let h = 675; // 16:9
+  let h = 675;
   if (aspectRatio === '1:1') { w = 800; h = 800; }
   else if (aspectRatio === '4:5') { w = 800; h = 1000; }
   else if (aspectRatio === '9:16') { w = 720; h = 1280; }
   else if (aspectRatio === '4:3') { w = 800; h = 600; }
   else if (aspectRatio === '3:2') { w = 900; h = 600; }
+  else if (aspectRatio === '2:3') { w = 600; h = 900; }
+  else if (aspectRatio === '21:9') { w = 1260; h = 540; }
 
-  return `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=${w}&h=${h}&q=80&sig=${seed}`;
+  if (typeof document === 'undefined') {
+    return `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  if (!ctx) {
+    return `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
+  }
+
+  // Background Gradient
+  const grad = ctx.createLinearGradient(0, 0, w, h);
+  if (platform === 'x') {
+    grad.addColorStop(0, '#0f172a');
+    grad.addColorStop(0.5, '#042f2e');
+    grad.addColorStop(1, '#064e3b');
+  } else if (platform === 'instagram') {
+    grad.addColorStop(0, '#1e1b4b');
+    grad.addColorStop(0.5, '#831843');
+    grad.addColorStop(1, '#064e3b');
+  } else if (platform === 'reddit') {
+    grad.addColorStop(0, '#0f172a');
+    grad.addColorStop(0.5, '#431407');
+    grad.addColorStop(1, '#064e3b');
+  } else {
+    grad.addColorStop(0, '#022c22');
+    grad.addColorStop(0.5, '#064e3b');
+    grad.addColorStop(1, '#0f172a');
+  }
+
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+
+  // Decorative ambient circles
+  ctx.fillStyle = 'rgba(16, 185, 129, 0.18)';
+  ctx.beginPath();
+  ctx.arc(w * 0.82, h * 0.22, Math.min(w, h) * 0.42, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = 'rgba(20, 184, 166, 0.15)';
+  ctx.beginPath();
+  ctx.arc(w * 0.18, h * 0.82, Math.min(w, h) * 0.38, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Central Card Container
+  const pad = Math.min(w, h) * 0.08;
+  const cardW = w - pad * 2;
+  const cardH = h - pad * 2;
+  const cardX = pad;
+  const cardY = pad;
+
+  ctx.fillStyle = 'rgba(6, 15, 11, 0.75)';
+  ctx.strokeStyle = 'rgba(16, 185, 129, 0.45)';
+  ctx.lineWidth = 3;
+
+  const r = 24;
+  ctx.beginPath();
+  ctx.moveTo(cardX + r, cardY);
+  ctx.lineTo(cardX + cardW - r, cardY);
+  ctx.quadraticCurveTo(cardX + cardW, cardY, cardX + cardW, cardY + r);
+  ctx.lineTo(cardX + cardW, cardY + cardH - r);
+  ctx.quadraticCurveTo(cardX + cardW, cardY + cardH, cardX + cardW - r, cardY + cardH);
+  ctx.lineTo(cardX + r, cardY + cardH);
+  ctx.quadraticCurveTo(cardX, cardY + cardH, cardX, cardY + cardH - r);
+  ctx.lineTo(cardX, cardY + r);
+  ctx.quadraticCurveTo(cardX, cardY, cardX + r, cardY);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Header Badge
+  ctx.fillStyle = '#10b981';
+  ctx.font = `bold ${Math.max(14, Math.floor(h * 0.032))}px "Plus Jakarta Sans", sans-serif`;
+  ctx.fillText(`${platform.toUpperCase()} • ${style.toUpperCase()}`, cardX + 36, cardY + 54);
+
+  // User Prompt Text
+  ctx.fillStyle = '#ffffff';
+  ctx.font = `bold ${Math.max(20, Math.floor(h * 0.046))}px "Plus Jakarta Sans", sans-serif`;
+
+  const words = prompt.split(' ');
+  let line = '';
+  let y = cardY + 115;
+  const maxW = cardW - 72;
+  const lineHeight = Math.max(30, Math.floor(h * 0.058));
+
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + words[i] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxW && i > 0) {
+      ctx.fillText(line.trim(), cardX + 36, y);
+      line = words[i] + ' ';
+      y += lineHeight;
+      if (y > cardY + cardH - 90) break;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line && y <= cardY + cardH - 90) {
+    ctx.fillText(line.trim(), cardX + 36, y);
+  }
+
+  // Subtitle / Mood Footer
+  ctx.fillStyle = 'rgba(236, 253, 245, 0.75)';
+  ctx.font = `500 ${Math.max(12, Math.floor(h * 0.026))}px "Plus Jakarta Sans", sans-serif`;
+  ctx.fillText(`✨ Mood: ${mood || 'Aesthetic AI'} • Created with Drafty AI Studio`, cardX + 36, cardY + cardH - 36);
+
+  return canvas.toDataURL('image/jpeg', 0.92);
 }
 
 // Helper utilities
