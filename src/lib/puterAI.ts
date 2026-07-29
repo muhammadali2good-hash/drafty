@@ -90,12 +90,23 @@ Return the copy directly with no conversational fluff.`;
 }
 
 /**
- * Generate Image via Puter.js or High-Quality Procedural Canvas Mockup fallback
+ * Generate Image via Puter.js AI with automatic fallback to Pollinations AI Engine
  */
 export async function generateAIImage(req: AIImageRequest): Promise<string> {
   const { prompt, style = 'Modern Illustration', mood = 'Clean & Aesthetic', aspectRatio = '16:9', platform } = req;
-  const fullPrompt = `${prompt}, style: ${style}, mood: ${mood}, platform: ${platform}, 8k quality, aesthetic graphic design`;
+  const fullPrompt = `${prompt}, style: ${style}, mood: ${mood}, platform: ${platform}, high resolution, 8k quality, aesthetic graphic design`;
 
+  let w = 1200;
+  let h = 675;
+  if (aspectRatio === '1:1') { w = 800; h = 800; }
+  else if (aspectRatio === '4:5') { w = 800; h = 1000; }
+  else if (aspectRatio === '9:16') { w = 720; h = 1280; }
+  else if (aspectRatio === '4:3') { w = 800; h = 600; }
+  else if (aspectRatio === '3:2') { w = 900; h = 600; }
+  else if (aspectRatio === '2:3') { w = 600; h = 900; }
+  else if (aspectRatio === '21:9') { w = 1260; h = 540; }
+
+  // 1. Attempt Puter.js AI txt2img if available in window environment
   try {
     if (isPuterAvailable()) {
       const imgRes = await window.puter!.ai.txt2img(fullPrompt);
@@ -103,22 +114,25 @@ export async function generateAIImage(req: AIImageRequest): Promise<string> {
         if (typeof imgRes === 'string' && imgRes.length > 0) {
           return imgRes;
         }
-        if (typeof imgRes === 'object') {
-          if ('src' in imgRes && typeof (imgRes as any).src === 'string') {
+        if (typeof imgRes === 'object' && imgRes !== null) {
+          if ('src' in imgRes && typeof (imgRes as any).src === 'string' && (imgRes as any).src) {
             return (imgRes as any).src;
           }
-          if ('url' in imgRes && typeof (imgRes as any).url === 'string') {
+          if ('url' in imgRes && typeof (imgRes as any).url === 'string' && (imgRes as any).url) {
             return (imgRes as any).url;
           }
         }
       }
     }
   } catch (err) {
-    console.warn('Puter AI image call failed or offline, rendering canvas mockup:', err);
+    console.warn('Puter AI image call unavailable, switching to real-time AI image generation engine:', err);
   }
 
-  // High quality procedural canvas mockup fallback
-  return generateCanvasMockupImage(req);
+  // 2. Real-time AI Image Generation using Pollinations AI (Unique image generated per prompt and seed)
+  const randomSeed = Math.floor(Math.random() * 10000000);
+  const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${randomSeed}&nologo=true&enhance=true`;
+
+  return pollinationsUrl;
 }
 
 /**
@@ -138,7 +152,8 @@ export function generateCanvasMockupImage(req: AIImageRequest): string {
   else if (aspectRatio === '21:9') { w = 1260; h = 540; }
 
   if (typeof document === 'undefined') {
-    return `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
+    const seed = Math.floor(Math.random() * 100000);
+    return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
   }
 
   const canvas = document.createElement('canvas');
@@ -147,7 +162,8 @@ export function generateCanvasMockupImage(req: AIImageRequest): string {
   const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    return `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
+    const seed = Math.floor(Math.random() * 100000);
+    return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
   }
 
   // Background Gradient
