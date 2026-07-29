@@ -18,6 +18,7 @@ import {
   MessageSquare,
   Facebook,
   FileText,
+  FileCode,
   Star,
   Copy,
   ChevronRight,
@@ -124,6 +125,7 @@ const SpotlightNavbar: React.FC<{
 
   const navLinks = [
     { id: 'hero', label: 'Overview', icon: Layout },
+    { id: 'templates-showcase', label: 'Templates', icon: FileCode },
     { id: 'playground', label: 'Live Carousel AI', icon: Sparkles },
     { id: 'platforms', label: 'Platforms', icon: Globe },
     { id: 'workflow', label: 'Workflow', icon: Layers },
@@ -588,6 +590,94 @@ Welcome back to edition #42. Today we are breaking down how top teams write once
                 Open Instagram Studio →
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Content Templates Library Showcase Section */}
+      <section id="templates-showcase" className="py-20 px-6 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center space-y-3">
+            <span className="px-3.5 py-1 rounded-full bg-purple-500/10 dark:bg-purple-950 text-purple-600 dark:text-purple-300 text-xs font-bold uppercase tracking-wider border border-purple-200 dark:border-purple-800">
+              Reusable Creator Blueprints
+            </span>
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 dark:text-white">
+              Content Templates Library
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
+              Pre-built, high-converting frameworks for X viral threads, Reddit authentic showcases, Instagram educational carousels, and newsletter broadcasts.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: 'Value Thread Framework',
+                platform: 'X (Twitter)',
+                category: 'Growth',
+                desc: 'Hook + 4 Actionable Takeaways + Summary Retweet CTA.',
+                badgeColor: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30',
+              },
+              {
+                title: 'Authentic Builder Story',
+                platform: 'Reddit',
+                category: 'Showcase',
+                desc: 'Non-spammy, high-upvote founder story for tech subreddits.',
+                badgeColor: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30',
+              },
+              {
+                title: '5-Slide IG Carousel',
+                platform: 'Instagram',
+                category: 'Educational',
+                desc: 'Slide-by-slide visual blueprint with hook, mistakes & solution.',
+                badgeColor: 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/30',
+              },
+              {
+                title: 'Product Launch Email',
+                platform: 'Email',
+                category: 'Conversion',
+                desc: 'High-CTR newsletter outline with clear primary CTA.',
+                badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
+              },
+            ].map((tpl, idx) => (
+              <div
+                key={idx}
+                className="p-6 rounded-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-4 hover:border-purple-500/40 transition-all shadow-sm flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${tpl.badgeColor}`}>
+                      {tpl.platform}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-semibold">{tpl.category}</span>
+                  </div>
+                  <h3 className="font-display font-bold text-base text-slate-900 dark:text-white">
+                    {tpl.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {tpl.desc}
+                  </p>
+                </div>
+                <button
+                  onClick={() => onEnterDashboard('templates')}
+                  className="w-full h-9 rounded-btn bg-slate-100 dark:bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <FileCode className="w-3.5 h-3.5" />
+                  <span>Use Template</span>
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center pt-2">
+            <button
+              onClick={() => onEnterDashboard('templates')}
+              id="landing-templates-explore-btn"
+              className="h-12 px-6 rounded-btn bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs inline-flex items-center gap-2 shadow-lg shadow-purple-600/25 transition-all cursor-pointer hover:scale-[1.02]"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Explore All Content Templates →</span>
+            </button>
           </div>
         </div>
       </section>

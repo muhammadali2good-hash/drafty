@@ -272,6 +272,23 @@ export default function App() {
                     onToggleFavouriteImage={handleToggleFavouriteImage}
                   />
                 )}
+
+                {/* Safe Fallback View */}
+                {!['dashboard', 'templates', 'settings', 'x', 'reddit', 'facebook', 'instagram', 'email', 'general'].includes(currentPlatform) && (
+                  <DashboardHomeView
+                    key="dashboard-fallback"
+                    drafts={drafts}
+                    images={images}
+                    communities={communities}
+                    onSelectDraft={handleSelectDraft}
+                    onSelectPlatform={setCurrentPlatform}
+                    onQuickCreate={handleOpenNewDraft}
+                    onOpenAICopy={() => setIsAICopyOpen(true)}
+                    onOpenAIImage={() => setIsAIImageOpen(true)}
+                    onDeleteImage={handleDeleteImage}
+                    storageKB={storageKB}
+                  />
+                )}
               </AnimatePresence>
             </main>
           </div>
@@ -314,6 +331,7 @@ export default function App() {
         defaultPlatform={currentPlatform}
         onSave={handleSaveDraft}
         onDelete={handleDeleteDraft}
+        onSaveAsTemplate={handleSaveNewTemplate}
       />
 
       <CommunityLibraryModal

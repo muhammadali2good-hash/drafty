@@ -21,7 +21,7 @@ import {
   Type,
   FileText,
 } from 'lucide-react';
-import { Draft, PlatformType, MediaItem, DraftStatus } from '../../types';
+import { Draft, PlatformType, MediaItem, DraftStatus, ContentTemplate } from '../../types';
 import { generateInstagramCarouselSlides, generateSingleSlideAI } from '../../lib/puterAI';
 
 interface DraftEditorModalProps {
@@ -31,7 +31,15 @@ interface DraftEditorModalProps {
   defaultPlatform: PlatformType;
   onSave: (draftData: Partial<Draft> & { platform: PlatformType }) => void;
   onDelete?: (id: string) => void;
+  onSaveAsTemplate?: (tpl: Partial<ContentTemplate> & { title: string; body: string; platform: PlatformType }) => void;
 }
+
+const VALID_DRAFT_PLATFORMS: PlatformType[] = ['x', 'reddit', 'facebook', 'instagram', 'email', 'general'];
+
+const resolveDraftPlatform = (p?: PlatformType): PlatformType => {
+  if (!p || !VALID_DRAFT_PLATFORMS.includes(p)) return 'x';
+  return p;
+};
 
 export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
   isOpen,
@@ -40,9 +48,10 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
   defaultPlatform,
   onSave,
   onDelete,
+  onSaveAsTemplate,
 }) => {
   const [platform, setPlatform] = useState<PlatformType>(
-    draft?.platform || (defaultPlatform === 'dashboard' ? 'x' : defaultPlatform)
+    resolveDraftPlatform(draft?.platform || defaultPlatform)
   );
   const [title, setTitle] = useState(draft?.title || '');
   const [body, setBody] = useState(draft?.body || '');
@@ -53,6 +62,7 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
   const [tagInput, setTagInput] = useState('');
   const [media, setMedia] = useState<MediaItem[]>(draft?.media || []);
   const [mediaUrlInput, setMediaUrlInput] = useState('');
+  const [templateSaved, setTemplateSaved] = useState(false);
 
   // X Thread builder
   const [threadItems, setThreadItems] = useState<string[]>(
@@ -78,7 +88,7 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
 
   useEffect(() => {
     if (draft) {
-      setPlatform(draft.platform);
+      setPlatform(resolveDraftPlatform(draft.platform));
       setTitle(draft.title);
       setBody(draft.body);
       setStatus(draft.status);
@@ -93,7 +103,7 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
       setRedditSubreddit(draft.redditSubreddit || 'r/SideProject');
       setRedditPostType(draft.redditPostType || 'discussion');
     } else {
-      setPlatform(defaultPlatform === 'dashboard' ? 'x' : defaultPlatform);
+      setPlatform(resolveDraftPlatform(defaultPlatform));
       setTitle('');
       setBody('');
       setStatus('draft');
@@ -237,6 +247,25 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
     }, 800);
   };
 
+  const handleSaveAsTemplateSubmit = () => {
+    if (!onSaveAsTemplate) return;
+    const fullBody = platform === 'x' && threadItems.length > 0 ? threadItems.join('\n\n---\n\n') : body;
+    onSaveAsTemplate({
+      title: title || 'Custom Content Template',
+      description: `Template generated from ${platform.toUpperCase()} draft`,
+      body: fullBody,
+      platform,
+      category: 'Custom Framework',
+      tags: tags.length > 0 ? tags : ['Custom'],
+      subjectLine: platform === 'email' ? emailSubject : undefined,
+    });
+
+    setTemplateSaved(true);
+    setTimeout(() => {
+      setTemplateSaved(false);
+    }, 2000);
+  };
+
   // Real-time word and character count calculations
   const getCombinedContentText = () => {
     if (platform === 'x') {
@@ -343,6 +372,18 @@ export const DraftEditorModal: React.FC<DraftEditorModalProps> = ({
                   title="Delete Draft"
                 >
                   <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+
+              {onSaveAsTemplate && (
+                <button
+                  onClick={handleSaveAsTemplateSubmit}
+                  id="draft-editor-save-template-btn"
+                  title="Save current draft body as reusable template in Templates Library"
+                  className="h-10 px-3 rounded-btn bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-300 font-semibold text-xs flex items-center gap-1.5 border border-purple-500/30 transition-all cursor-pointer"
+                >
+                  {templateSaved ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Sparkles className="w-3.5 h-3.5 text-purple-500" />}
+                  <span>{templateSaved ? 'Saved as Template!' : 'Save as Template'}</span>
                 </button>
               )}
 
