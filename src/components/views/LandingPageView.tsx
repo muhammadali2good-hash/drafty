@@ -126,11 +126,11 @@ const SpotlightNavbar: React.FC<{
   const navLinks = [
     { id: 'hero', label: 'Overview', icon: Layout },
     { id: 'templates-showcase', label: 'Templates', icon: FileCode },
-    { id: 'playground', label: 'Live Carousel AI', icon: Sparkles },
+    { id: 'playground', label: 'Carousel AI', icon: Sparkles },
     { id: 'platforms', label: 'Platforms', icon: Globe },
     { id: 'workflow', label: 'Workflow', icon: Layers },
     { id: 'features', label: 'Features', icon: Zap },
-    { id: 'matrix', label: 'Comparison', icon: Sliders },
+    { id: 'matrix', label: 'Compare', icon: Sliders },
     { id: 'testimonials', label: 'Proof', icon: Star },
     { id: 'faq', label: 'FAQ', icon: HelpCircle },
   ];
@@ -173,21 +173,21 @@ const SpotlightNavbar: React.FC<{
   };
 
   return (
-    <header className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 pointer-events-none">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 pointer-events-auto">
+    <header className="fixed top-3 sm:top-4 left-0 right-0 z-50 px-2 sm:px-6 pointer-events-none">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-3 pointer-events-auto">
         {/* Main Floating Spotlight Navbar Container */}
         <div
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className="relative flex-1 flex items-center justify-between px-4 py-2.5 rounded-full bg-white/80 dark:bg-slate-900/85 backdrop-blur-xl border border-slate-200/90 dark:border-teal-500/30 shadow-2xl shadow-teal-950/10 dark:shadow-teal-900/20 overflow-hidden transition-all duration-300"
+          className="relative flex-1 flex items-center justify-between px-3 sm:px-4 py-2 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/90 dark:border-teal-500/30 shadow-xl shadow-teal-950/10 dark:shadow-teal-900/20 transition-all duration-300 gap-2 sm:gap-3 font-sans"
         >
           {/* Dynamic Spotlight Radial Light Layer following Mouse Position */}
           {isHovering && (
             <div
-              className="absolute inset-0 pointer-events-none transition-opacity duration-200"
+              className="absolute inset-0 pointer-events-none transition-opacity duration-200 rounded-full overflow-hidden"
               style={{
-                background: `radial-gradient(220px circle at ${mousePos.x}px ${mousePos.y}px, ${
+                background: `radial-gradient(200px circle at ${mousePos.x}px ${mousePos.y}px, ${
                   theme === 'dark' ? 'rgba(45, 212, 191, 0.18)' : 'rgba(20, 184, 166, 0.12)'
                 }, transparent 75%)`,
               }}
@@ -197,21 +197,21 @@ const SpotlightNavbar: React.FC<{
           {/* Brand Logo & Leaf Badge */}
           <div
             onClick={() => scrollToSection('hero')}
-            className="flex items-center gap-2.5 cursor-pointer group shrink-0 relative z-10"
+            className="flex items-center gap-2 cursor-pointer group shrink-0 relative z-10"
           >
             <BrandLeafBadge size="sm" />
             <div className="flex flex-col">
-              <span className="font-display font-extrabold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+              <span className="font-display font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors whitespace-nowrap">
                 Drafty <span className="text-teal-600 dark:text-teal-400">AI</span>
               </span>
-              <span className="text-[9px] font-semibold text-slate-400 dark:text-slate-400 hidden sm:inline-block">
+              <span className="text-[9px] font-semibold text-slate-400 dark:text-slate-400 hidden xl:inline-block leading-none">
                 Studio v2.5
               </span>
             </div>
           </div>
 
           {/* Desktop Nav Items with Active Indicator Pill */}
-          <nav className="hidden md:flex items-center gap-1 relative z-10 px-2 py-1 bg-slate-100/60 dark:bg-slate-950/60 rounded-full border border-slate-200/50 dark:border-slate-800/80">
+          <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 relative z-10 px-1.5 py-1 bg-slate-100/70 dark:bg-slate-950/70 rounded-full border border-slate-200/60 dark:border-slate-800/80 max-w-full overflow-x-auto no-scrollbar">
             {navLinks.map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
@@ -219,7 +219,7 @@ const SpotlightNavbar: React.FC<{
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`relative px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                  className={`relative px-2.5 lg:px-3 py-1 rounded-full text-[11px] lg:text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 whitespace-nowrap ${
                     isActive
                       ? 'text-teal-950 dark:text-teal-100 font-bold'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -232,18 +232,18 @@ const SpotlightNavbar: React.FC<{
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <Icon className={`w-3.5 h-3.5 relative z-10 ${isActive ? 'text-teal-700 dark:text-teal-300' : ''}`} />
-                  <span className="relative z-10">{item.label}</span>
+                  <Icon className={`w-3.5 h-3.5 shrink-0 relative z-10 ${isActive ? 'text-teal-700 dark:text-teal-300' : ''}`} />
+                  <span className="relative z-10 whitespace-nowrap">{item.label}</span>
                 </button>
               );
             })}
           </nav>
 
           {/* Actions: Theme Toggle & Launch Studio CTA */}
-          <div className="flex items-center gap-2 relative z-10">
+          <div className="flex items-center gap-1.5 sm:gap-2 relative z-10 shrink-0">
             <button
               onClick={onToggleTheme}
-              className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 sm:p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer shrink-0"
               title="Toggle light / dark theme"
             >
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
@@ -252,17 +252,17 @@ const SpotlightNavbar: React.FC<{
             <button
               onClick={() => onEnterDashboard('dashboard')}
               id="spotlight-nav-launch-btn"
-              className="h-9 px-4 rounded-full bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-teal-600/30 transition-all cursor-pointer hover:scale-[1.03] shrink-0"
+              className="h-8 sm:h-9 px-3 sm:px-4 rounded-full bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-teal-600/30 transition-all cursor-pointer hover:scale-[1.03] shrink-0 whitespace-nowrap"
             >
               <span className="hidden sm:inline">Launch Studio</span>
               <span className="sm:hidden">Launch</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 shrink-0" />
             </button>
 
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer"
+              className="md:hidden p-1.5 sm:p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer shrink-0"
               aria-label="Toggle Navigation Menu"
             >
               <Sliders className="w-4 h-4" />
